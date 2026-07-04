@@ -221,23 +221,24 @@
   .needs-sub{font-size:0.85rem; color:var(--ink-faint); margin-bottom:12px;}
   .needs-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
   .need-stat{
-    display:flex; align-items:center; gap:10px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px;
+    text-align:center;
     background:linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,255,255,0.38));
     border:1px solid rgba(255,255,255,0.85);
     border-radius:16px;
-    padding:11px 13px;
+    padding:16px 10px;
     box-shadow:0 6px 16px -8px rgba(80,70,140,0.25);
   }
   .need-stat.wide{grid-column:span 2;}
   .need-stat .ns-icon{
-    flex-shrink:0; width:36px; height:36px; border-radius:11px;
+    flex-shrink:0; width:38px; height:38px; border-radius:11px;
     display:flex; align-items:center; justify-content:center;
-    font-size:1.15rem;
+    font-size:1.2rem;
     background:rgba(255,255,255,0.65);
     box-shadow:inset 0 0 0 1px rgba(255,255,255,0.7);
   }
-  .need-stat .ns-text{font-size:0.9rem; color:var(--ink-dim); line-height:1.25;}
-  .need-stat .ns-text b{font-family:var(--font-display); font-weight:600; color:var(--ink); font-size:1.05rem; margin-right:5px;}
+  .need-stat .ns-val{font-family:var(--font-display); font-weight:600; color:var(--ink); font-size:1.15rem; white-space:nowrap;}
+  .need-stat .ns-lbl{font-size:0.82rem; color:var(--ink-dim);}
   .fat-tip{
     display:flex; gap:9px; align-items:flex-start;
     background:rgba(168,120,209,0.1);
@@ -288,7 +289,7 @@
 
   .food-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(146px,1fr));
+    grid-template-columns:1fr;
     gap:9px;
   }
   .food-card{
@@ -298,20 +299,25 @@
     border:1px solid var(--glass-border);
     border-left:3px solid var(--gruen);
     border-radius:14px;
-    padding:12px 13px;
+    padding:12px 15px;
     cursor:pointer;
     transition:transform 0.12s;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
   }
   .food-card:hover{transform:translateY(-2px);}
   .food-card.gelb{border-left-color:var(--gelb);}
   .food-card.rot{border-left-color:var(--rot);}
-  .food-card .fname{font-size:0.98rem; font-weight:600; display:flex; align-items:center; gap:7px;}
+  .food-card .fname{font-size:0.98rem; font-weight:600; display:flex; align-items:center; gap:7px; flex-shrink:0;}
   .food-card .femoji{font-size:1.15rem;}
-  .food-card .fmeta{font-size:0.82rem; color:var(--ink-faint); margin-top:4px;}
-  .food-card .ftag{display:inline-block; margin-top:7px; font-size:0.76rem; letter-spacing:0.4px; text-transform:uppercase; color:var(--gruen);}
+  .food-card .fmeta{font-size:0.82rem; color:var(--ink-faint); text-align:right;}
+  .food-card .fright{display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0;}
+  .food-card .ftag{display:inline-block; font-size:0.76rem; letter-spacing:0.4px; text-transform:uppercase; color:var(--gruen);}
   .food-card.gelb .ftag{color:var(--gelb);}
   .food-card.rot .ftag{color:var(--rot);}
-  .food-card .funlim{display:inline-block; margin-top:5px; margin-left:5px; font-size:0.58rem; color:var(--accent2); font-weight:600;}
+  .food-card .funlim{display:inline-block; font-size:0.68rem; color:var(--accent2); font-weight:600;}
 
   .food-card.locked{position:relative; border-left-color:rgba(168,120,209,0.6); overflow:hidden; animation:cardPulse 2.4s ease-in-out infinite;}
   @keyframes cardPulse{
@@ -321,12 +327,13 @@
   @media (prefers-reduced-motion: reduce){
     .food-card.locked{animation:none;}
   }
-  .food-card.locked .locked-inner{filter:blur(7px); opacity:0.6; user-select:none;}
+  .food-card.locked .locked-inner{filter:blur(7px); opacity:0.6; user-select:none; display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%;}
   .food-card.locked .unlock-overlay{
-    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:3px; background:rgba(255,255,255,0.4); text-align:center; padding:8px;
+    position:absolute; inset:0; display:flex; flex-direction:row; align-items:center; justify-content:center;
+    gap:8px; background:rgba(255,255,255,0.4); text-align:center; padding:8px;
   }
   .food-card.locked .unlock-icon{font-size:1.3rem;}
+  .food-card.locked .unlock-textwrap{display:flex; flex-direction:column; align-items:flex-start; gap:1px; text-align:left;}
   .food-card.locked .unlock-text{font-size:0.66rem; color:var(--ink); font-weight:600;}
   .food-card.locked .unlock-sub{font-size:0.58rem; color:var(--ink-dim);}
   .food-card.locked:hover .unlock-overlay{background:rgba(255,255,255,0.55);}
@@ -1251,10 +1258,10 @@ function renderDashboard(state){
         <h3>Deine grobe Tagesempfehlung</h3>
         <div class="needs-sub">${AKTIVITAET[checkin.activity].label} · ${WOHLBEFINDEN[checkin.wellbeing].emoji} ${WOHLBEFINDEN[checkin.wellbeing].label}</div>
         <div class="needs-grid">
-          <div class="need-stat"><span class="ns-icon">🥩</span><span class="ns-text"><b>${t.protein} g</b>Protein</span></div>
-          <div class="need-stat"><span class="ns-icon">🥑</span><span class="ns-text"><b>${t.fettMin}–${t.fettMax} g</b>Fett, Spielraum</span></div>
-          <div class="need-stat"><span class="ns-icon">🌾</span><span class="ns-text"><b>${t.carbs} g</b>Kohlenhydrate</span></div>
-          <div class="need-stat"><span class="ns-icon">🔥</span><span class="ns-text"><b>${t.kcal}</b>kcal, ca.</span></div>
+          <div class="need-stat"><span class="ns-icon">🥩</span><span class="ns-val">${t.protein} g</span><span class="ns-lbl">Protein</span></div>
+          <div class="need-stat"><span class="ns-icon">🥑</span><span class="ns-val">${t.fettMin}–${t.fettMax} g</span><span class="ns-lbl">Fett, Spielraum</span></div>
+          <div class="need-stat"><span class="ns-icon">🌾</span><span class="ns-val">${t.carbs} g</span><span class="ns-lbl">Kohlenhydrate</span></div>
+          <div class="need-stat"><span class="ns-icon">🔥</span><span class="ns-val">${t.kcal}</span><span class="ns-lbl">kcal, ca.</span></div>
         </div>
         <div class="fat-tip">💡 Fett ist deine Stellschraube: Iss davon nur so viel, wie du zum Sattwerden brauchst – den Rest holt sich dein Körper aus eigenen Reserven. Genau das ist beim Abnehmen erwünscht.</div>
         <button class="edit-link" id="editCheckin">Angaben für heute ändern</button>
@@ -1287,9 +1294,10 @@ function renderDashboard(state){
           cardsHtml += `
             <div class="food-card ${item.ampel}" data-id="${item.id}">
               <div class="fname"><span class="femoji">${item.emoji}</span>${item.name}${isNeu ? '<span class="new-badge">NEU</span>' : ''}</div>
-              <div class="fmeta">${item.kcal} kcal · ${item.kh} g KH /100g</div>
-              <div class="ftag">${item.ampel === "gruen" ? "Grün" : item.ampel === "gelb" ? "Gelb" : "Rot"}</div>
-              ${item.unlimited ? '<span class="funlim">∞ unbegrenzt</span>' : ""}
+              <div class="fright">
+                <div class="fmeta">${item.kcal} kcal · ${item.kh} g KH /100g</div>
+                <div class="ftag">${item.ampel === "gruen" ? "Grün" : item.ampel === "gelb" ? "Gelb" : "Rot"}${item.unlimited ? ' · <span class="funlim">∞ unbegrenzt</span>' : ""}</div>
+              </div>
             </div>
           `;
         } else {
@@ -1301,8 +1309,10 @@ function renderDashboard(state){
               </div>
               <div class="unlock-overlay">
                 <div class="unlock-icon">✨</div>
-                <div class="unlock-text">Neu freigeschaltet</div>
-                <div class="unlock-sub">Tippen zum Entdecken</div>
+                <div class="unlock-textwrap">
+                  <div class="unlock-text">Neu freigeschaltet</div>
+                  <div class="unlock-sub">Tippen zum Entdecken</div>
+                </div>
               </div>
             </div>
           `;
