@@ -23,9 +23,10 @@
     --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Consolas, monospace;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
+  html{font-size:19px;}
   html,body{height:100%;}
   body{
-    background:linear-gradient(180deg,#fdf9f6 0%, #f6f4fb 45%, #f2f8f6 100%);
+    background:linear-gradient(160deg,#fef1f0 0%, #f3ecfb 30%, #eaf3fb 60%, #eafaf3 100%);
     color:var(--ink);
     font-family:var(--font-body);
     min-height:100vh;
@@ -33,19 +34,21 @@
     align-items:flex-start;
     justify-content:center;
     padding:32px 16px 90px;
-    line-height:1.5;
+    line-height:1.6;
     position:relative;
     overflow-x:hidden;
   }
 
   /* ---------- Bokeh-Hintergrund ---------- */
   .bokeh{position:fixed; inset:0; overflow:hidden; z-index:-1; pointer-events:none;}
-  .orb{position:absolute; border-radius:50%; filter:blur(60px); opacity:0.55; will-change:transform;}
-  .orb1{width:340px; height:340px; background:radial-gradient(circle at 30% 30%, #ffd6e8, transparent 70%); top:-80px; left:-60px; animation:float1 26s ease-in-out infinite;}
-  .orb2{width:420px; height:420px; background:radial-gradient(circle at 40% 40%, #c9e8ff, transparent 70%); top:10%; right:-120px; animation:float2 32s ease-in-out infinite;}
-  .orb3{width:300px; height:300px; background:radial-gradient(circle at 50% 50%, #d8ffe0, transparent 70%); bottom:5%; left:-80px; animation:float3 28s ease-in-out infinite;}
-  .orb4{width:260px; height:260px; background:radial-gradient(circle at 50% 50%, #f3e0ff, transparent 70%); bottom:-60px; right:8%; animation:float1 22s ease-in-out infinite reverse;}
-  .orb5{width:220px; height:220px; background:radial-gradient(circle at 50% 50%, #fff2c9, transparent 70%); top:40%; left:38%; animation:float2 30s ease-in-out infinite;}
+  .orb{position:absolute; border-radius:50%; filter:blur(65px); opacity:0.7; will-change:transform;}
+  .orb1{width:380px; height:380px; background:radial-gradient(circle at 30% 30%, #ffb3d1, transparent 70%); top:-90px; left:-70px; animation:float1 26s ease-in-out infinite;}
+  .orb2{width:460px; height:460px; background:radial-gradient(circle at 40% 40%, #9fd6ff, transparent 70%); top:8%; right:-130px; animation:float2 32s ease-in-out infinite;}
+  .orb3{width:340px; height:340px; background:radial-gradient(circle at 50% 50%, #a8f0c6, transparent 70%); bottom:5%; left:-90px; animation:float3 28s ease-in-out infinite;}
+  .orb4{width:300px; height:300px; background:radial-gradient(circle at 50% 50%, #dcb3ff, transparent 70%); bottom:-70px; right:6%; animation:float1 22s ease-in-out infinite reverse;}
+  .orb5{width:260px; height:260px; background:radial-gradient(circle at 50% 50%, #ffe19c, transparent 70%); top:38%; left:36%; animation:float2 30s ease-in-out infinite;}
+  .orb6{width:240px; height:240px; background:radial-gradient(circle at 50% 50%, #7fe0d6, transparent 70%); top:62%; right:22%; animation:float3 24s ease-in-out infinite reverse;}
+  .orb7{width:200px; height:200px; background:radial-gradient(circle at 50% 50%, #ffc9a8, transparent 70%); top:-40px; right:30%; animation:float1 30s ease-in-out infinite;}
   @keyframes float1{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(40px,60px) scale(1.08);}66%{transform:translate(-30px,20px) scale(0.95);}}
   @keyframes float2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-60px,50px) scale(1.1);}}
   @keyframes float3{0%,100%{transform:translate(0,0) scale(1);}40%{transform:translate(50px,-40px) scale(1.05);}75%{transform:translate(-20px,-70px) scale(0.92);}}
@@ -54,8 +57,8 @@
 
   .glass{
     background:var(--glass-bg);
-    backdrop-filter:blur(18px) saturate(160%);
-    -webkit-backdrop-filter:blur(18px) saturate(160%);
+    backdrop-filter:blur(20px) saturate(180%);
+    -webkit-backdrop-filter:blur(20px) saturate(180%);
     border:1px solid var(--glass-border);
     box-shadow:var(--glass-shadow);
     border-radius:20px;
@@ -66,7 +69,7 @@
     background:rgba(255,255,255,0.75);
     border:1px solid rgba(255,255,255,0.85);
     color:var(--ink);
-    font-size:1rem;
+    font-size:1.1rem;
     padding:13px 16px;
     border-radius:12px;
     font-family:var(--font-body);
@@ -78,8 +81,8 @@
     background:linear-gradient(135deg, var(--accent), var(--accent2));
     color:#fff;
     font-weight:600;
-    font-size:0.98rem;
-    padding:14px 18px;
+    font-size:1.05rem;
+    padding:15px 18px;
     border-radius:12px;
     transition:filter 0.15s, transform 0.1s;
     box-shadow:0 6px 20px -6px rgba(150,120,200,0.55);
@@ -92,8 +95,8 @@
     color:var(--ink-dim);
     border:1px solid rgba(255,255,255,0.8);
     border-radius:12px;
-    padding:13px 16px;
-    font-size:0.9rem;
+    padding:14px 16px;
+    font-size:1rem;
   }
   .choice-row{display:flex; gap:8px; flex-wrap:wrap;}
   .choice-btn{
@@ -145,11 +148,11 @@
   .wizard-dots .wdot.active{background:var(--accent); width:20px; border-radius:5px;}
   .onboard h1{font-family:var(--font-display); font-size:1.75rem; font-weight:400;}
   .onboard h2{font-family:var(--font-display); font-size:1.3rem; font-weight:400;}
-  .onboard p.lead{color:var(--ink-dim); font-size:0.92rem; max-width:340px;}
+  .onboard p.lead{color:var(--ink-dim); font-size:1rem; max-width:340px;}
   .onboard form{display:flex; flex-direction:column; gap:12px; width:100%;}
   .field-row{display:flex; gap:10px;}
   .field-row .field{flex:1;}
-  .field-label{font-size:0.74rem; color:var(--ink-faint); text-align:left; margin-bottom:5px;}
+  .field-label{font-size:0.88rem; color:var(--ink-faint); text-align:left; margin-bottom:5px;}
   .wizard-actions{display:flex; gap:10px; width:100%; margin-top:6px;}
   .wizard-actions .btn-secondary{flex:0 0 auto;}
   .wizard-actions .btn-primary{flex:1;}
@@ -163,7 +166,7 @@
     padding:12px 14px;
   }
   .mini-card .mc-icon{font-size:1.3rem; flex-shrink:0;}
-  .mini-card .mc-text{font-size:0.82rem; color:var(--ink-dim);}
+  .mini-card .mc-text{font-size:0.9rem; color:var(--ink-dim);}
 
   /* ---------- Dashboard ---------- */
   header.top{
@@ -175,7 +178,7 @@
     padding:0 4px;
   }
   .top-left{display:flex; align-items:center; gap:10px;}
-  .hello{font-size:0.86rem; color:var(--ink-dim);}
+  .hello{font-size:0.94rem; color:var(--ink-dim);}
   .hello b{color:var(--ink); font-weight:700;}
   .reset-link{
     background:none;
@@ -198,7 +201,7 @@
   .ring .dayof{font-size:0.6rem; color:var(--ink-faint); letter-spacing:0.5px;}
   .ring-info{flex:1; min-width:0;}
   .ring-info h2{font-family:var(--font-display); font-weight:400; font-size:1.05rem; margin-bottom:5px;}
-  .countdown{font-family:var(--font-mono); font-size:0.8rem; color:var(--gelb);}
+  .countdown{font-family:var(--font-mono); font-size:0.88rem; color:var(--gelb);}
   .countdown.done{color:var(--gruen);}
   .progress-dots{display:flex; gap:3px; margin-top:9px; flex-wrap:wrap;}
   .dot{width:7px; height:7px; border-radius:50%; background:rgba(150,140,170,0.25);}
@@ -209,18 +212,32 @@
 
   /* ---------- Tages-Check & Tagesbedarf ---------- */
   .check-card{padding:18px 20px; margin-bottom:14px;}
-  .check-card h3{font-family:var(--font-display); font-weight:400; font-size:1rem; margin-bottom:2px;}
+  .check-card h3{font-family:var(--font-display); font-weight:400; font-size:1.1rem; margin-bottom:2px;}
   .check-row{margin-top:14px;}
-  .check-row .row-label{font-size:0.78rem; color:var(--ink-dim); margin-bottom:8px;}
+  .check-row .row-label{font-size:0.92rem; color:var(--ink-dim); margin-bottom:8px;}
 
   .needs-card{padding:18px 20px; margin-bottom:14px;}
-  .needs-card h3{font-family:var(--font-display); font-weight:400; font-size:1rem; margin-bottom:2px;}
-  .needs-sub{font-size:0.74rem; color:var(--ink-faint); margin-bottom:12px;}
-  .needs-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:8px;}
-  .need-stat{background:rgba(255,255,255,0.55); border-radius:12px; padding:10px 10px; text-align:center;}
+  .needs-card h3{font-family:var(--font-display); font-weight:400; font-size:1.1rem; margin-bottom:2px;}
+  .needs-sub{font-size:0.85rem; color:var(--ink-faint); margin-bottom:12px;}
+  .needs-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
+  .need-stat{
+    display:flex; align-items:center; gap:10px;
+    background:linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,255,255,0.38));
+    border:1px solid rgba(255,255,255,0.85);
+    border-radius:16px;
+    padding:11px 13px;
+    box-shadow:0 6px 16px -8px rgba(80,70,140,0.25);
+  }
   .need-stat.wide{grid-column:span 2;}
-  .need-stat .val{font-family:var(--font-display); font-size:1.15rem; white-space:nowrap;}
-  .need-stat .lbl{font-size:0.66rem; color:var(--ink-faint); margin-top:2px;}
+  .need-stat .ns-icon{
+    flex-shrink:0; width:36px; height:36px; border-radius:11px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.15rem;
+    background:rgba(255,255,255,0.65);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,0.7);
+  }
+  .need-stat .ns-text{font-size:0.9rem; color:var(--ink-dim); line-height:1.25;}
+  .need-stat .ns-text b{font-family:var(--font-display); font-weight:600; color:var(--ink); font-size:1.05rem; margin-right:5px;}
   .fat-tip{
     display:flex; gap:9px; align-items:flex-start;
     background:rgba(168,120,209,0.1);
@@ -232,7 +249,6 @@
     color:var(--ink-dim);
     line-height:1.5;
   }
-  .needs-note{font-size:0.68rem; color:var(--ink-faint); margin-top:10px; line-height:1.5;}
   .edit-link{
     background:none; color:var(--accent); font-size:0.72rem;
     text-decoration:underline; text-underline-offset:3px; margin-top:8px; display:inline-block;
@@ -240,7 +256,7 @@
 
   .legend-strip{
     display:flex; gap:14px; margin-bottom:16px; padding:9px 16px;
-    font-size:0.72rem; color:var(--ink-dim); flex-wrap:wrap;
+    font-size:0.88rem; color:var(--ink-dim); flex-wrap:wrap;
     background:rgba(255,255,255,0.35); border-radius:14px;
   }
   .legend-strip span{display:flex; align-items:center; gap:5px;}
@@ -258,7 +274,7 @@
   }
   .day-header-left{display:flex; align-items:center; gap:9px;}
   .day-chevron{font-size:0.7rem; color:var(--ink-faint); transition:transform 0.15s;}
-  .day-title{font-family:var(--font-display); font-size:0.95rem; color:var(--ink-dim);}
+  .day-title{font-family:var(--font-display); font-size:1.05rem; color:var(--ink-dim);}
   .today-pill{
     font-size:0.6rem; background:linear-gradient(135deg, var(--accent), var(--accent2));
     color:#fff; padding:2px 8px; border-radius:20px; font-weight:700;
@@ -268,7 +284,7 @@
     font-size:0.7rem; color:var(--accent); white-space:nowrap; cursor:pointer;
     background:rgba(168,120,209,0.12); padding:5px 10px; border-radius:20px; flex-shrink:0;
   }
-  .day-tip{font-size:0.77rem; color:var(--ink-faint); margin:0 4px 10px; font-style:italic;}
+  .day-tip{font-size:0.88rem; color:var(--ink-faint); margin:0 4px 10px; font-style:italic;}
 
   .food-grid{
     display:grid;
@@ -289,15 +305,22 @@
   .food-card:hover{transform:translateY(-2px);}
   .food-card.gelb{border-left-color:var(--gelb);}
   .food-card.rot{border-left-color:var(--rot);}
-  .food-card .fname{font-size:0.87rem; font-weight:600; display:flex; align-items:center; gap:7px;}
+  .food-card .fname{font-size:0.98rem; font-weight:600; display:flex; align-items:center; gap:7px;}
   .food-card .femoji{font-size:1.15rem;}
-  .food-card .fmeta{font-size:0.68rem; color:var(--ink-faint); margin-top:4px;}
-  .food-card .ftag{display:inline-block; margin-top:7px; font-size:0.6rem; letter-spacing:0.4px; text-transform:uppercase; color:var(--gruen);}
+  .food-card .fmeta{font-size:0.82rem; color:var(--ink-faint); margin-top:4px;}
+  .food-card .ftag{display:inline-block; margin-top:7px; font-size:0.76rem; letter-spacing:0.4px; text-transform:uppercase; color:var(--gruen);}
   .food-card.gelb .ftag{color:var(--gelb);}
   .food-card.rot .ftag{color:var(--rot);}
   .food-card .funlim{display:inline-block; margin-top:5px; margin-left:5px; font-size:0.58rem; color:var(--accent2); font-weight:600;}
 
-  .food-card.locked{position:relative; border-left-color:rgba(168,120,209,0.6); overflow:hidden;}
+  .food-card.locked{position:relative; border-left-color:rgba(168,120,209,0.6); overflow:hidden; animation:cardPulse 2.4s ease-in-out infinite;}
+  @keyframes cardPulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(168,120,209,0.5); transform:scale(1);}
+    50%{box-shadow:0 0 0 9px rgba(168,120,209,0); transform:scale(1.02);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .food-card.locked{animation:none;}
+  }
   .food-card.locked .locked-inner{filter:blur(7px); opacity:0.6; user-select:none;}
   .food-card.locked .unlock-overlay{
     position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -310,7 +333,7 @@
 
   .new-badge{display:inline-block; font-size:0.58rem; background:linear-gradient(135deg, var(--accent), var(--accent2)); color:#fff; padding:2px 6px; border-radius:6px; margin-left:5px; font-weight:700;}
 
-  .locked-note{color:var(--ink-faint); font-size:0.8rem; padding:14px 18px; margin-bottom:6px; border-radius:14px;}
+  .locked-note{color:var(--ink-faint); font-size:0.9rem; padding:14px 18px; margin-bottom:6px; border-radius:14px;}
 
   /* ---------- Modal ---------- */
   .overlay{position:fixed; inset:0; background:rgba(70,60,90,0.28); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:20px; z-index:50;}
@@ -333,42 +356,41 @@
   .modal .tag-line{font-size:0.68rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--gruen); margin-bottom:14px;}
   .modal.gelb .tag-line{color:var(--gelb);}
   .modal.rot .tag-line{color:var(--rot);}
-  .modal p.desc{font-size:0.88rem; color:var(--ink-dim); margin-bottom:14px;}
-  table.macro{width:100%; border-collapse:collapse; font-family:var(--font-mono); font-size:0.78rem;}
+  .modal p.desc{font-size:0.96rem; color:var(--ink-dim); margin-bottom:14px;}
+  table.macro{width:100%; border-collapse:collapse; font-family:var(--font-mono); font-size:0.9rem;}
   table.macro td{padding:6px 4px; border-bottom:1px solid rgba(150,140,170,0.2);}
   table.macro td:first-child{color:var(--ink-faint);}
   table.macro td:last-child{text-align:right;}
-  .macro-note{font-size:0.66rem; color:var(--ink-faint); margin-top:9px;}
+  .macro-note{font-size:0.8rem; color:var(--ink-faint); margin-top:9px;}
   .close-btn{margin-top:18px; width:100%; background:rgba(255,255,255,0.6); color:var(--ink-dim); border:1px solid rgba(255,255,255,0.8); border-radius:11px; padding:11px; font-size:0.84rem;}
 
   .recipe-block{margin-bottom:16px; padding-bottom:14px; border-bottom:1px solid rgba(150,140,170,0.2);}
   .recipe-block:last-of-type{border-bottom:none; margin-bottom:4px;}
   .recipe-block .rmeal{font-size:0.64rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--accent); font-weight:700;}
   .recipe-block h4{font-family:var(--font-display); font-weight:400; font-size:1.02rem; margin:4px 0 4px;}
-  .recipe-block .rdesc{font-size:0.8rem; color:var(--ink-dim); margin-bottom:8px;}
-  .recipe-block ul.zutaten{list-style:none; font-size:0.8rem; margin-bottom:8px;}
+  .recipe-block .rdesc{font-size:0.9rem; color:var(--ink-dim); margin-bottom:8px;}
+  .recipe-block ul.zutaten{list-style:none; font-size:0.9rem; margin-bottom:8px;}
   .recipe-block ul.zutaten li{padding:3px 0; display:flex; justify-content:space-between; gap:10px;}
   .recipe-block ul.zutaten li .zname{color:var(--ink);}
   .recipe-block ul.zutaten li .zamt{color:var(--ink-faint); white-space:nowrap;}
-  .recipe-block ol.schritte{font-size:0.78rem; color:var(--ink-dim); padding-left:18px;}
+  .recipe-block ol.schritte{font-size:0.9rem; color:var(--ink-dim); padding-left:18px;}
   .recipe-block ol.schritte li{margin-bottom:4px;}
-  .recipe-intro{font-size:0.76rem; color:var(--ink-faint); margin-bottom:12px; line-height:1.5;}
+  .recipe-intro{font-size:0.86rem; color:var(--ink-faint); margin-bottom:12px; line-height:1.5;}
 
   /* ---------- Completion ---------- */
   .complete-card{text-align:center; padding:28px 22px; margin-bottom:16px;}
   .complete-card h2{font-family:var(--font-display); font-weight:400; font-size:1.3rem; margin-bottom:9px;}
-  .complete-card p{color:var(--ink-dim); font-size:0.88rem;}
+  .complete-card p{color:var(--ink-dim); font-size:0.95rem;}
   .wellbeing-summary{
     margin-top:16px; padding-top:16px; border-top:1px solid rgba(150,140,170,0.2);
     text-align:left;
   }
   .wellbeing-summary h4{font-family:var(--font-display); font-weight:400; font-size:0.95rem; margin-bottom:8px; text-align:center;}
   .wb-counts{display:flex; justify-content:center; gap:16px; margin-bottom:8px;}
-  .wb-counts div{text-align:center; font-size:0.78rem; color:var(--ink-dim);}
+  .wb-counts div{text-align:center; font-size:0.88rem; color:var(--ink-dim);}
   .wb-counts .wb-num{font-family:var(--font-display); font-size:1.2rem; display:block;}
-  .wellbeing-summary .wb-trend{font-size:0.8rem; color:var(--ink-dim); text-align:center;}
+  .wellbeing-summary .wb-trend{font-size:0.88rem; color:var(--ink-dim); text-align:center;}
 
-  .env-note{font-size:0.68rem; color:var(--ink-faint); text-align:center; margin-top:30px; line-height:1.6;}
 
   .debug-panel{margin-top:14px; padding:12px 14px; border:1px dashed var(--rot); border-radius:12px; background:rgba(200,90,82,0.06); font-size:0.74rem; color:var(--ink-dim); display:flex; align-items:center; justify-content:space-between; gap:10px;}
   .debug-panel button{background:var(--rot); color:#fff; border-radius:8px; padding:8px 12px; font-size:0.72rem; white-space:nowrap;}
@@ -387,6 +409,8 @@
   <div class="orb orb3"></div>
   <div class="orb orb4"></div>
   <div class="orb orb5"></div>
+  <div class="orb orb6"></div>
+  <div class="orb orb7"></div>
 </div>
 
 <div class="wrap" id="app"></div>
@@ -1106,6 +1130,11 @@ function renderOnboardStep3(){
           <div class="mini-card"><div class="mc-icon">🍽️</div><div class="mc-text">Täglich 3 Rezepte, passend zu deinem Bedarf berechnet.</div></div>
           <div class="mini-card"><div class="mc-icon">💬</div><div class="mc-text">Kurzer Check-in täglich: Bewegung &amp; Wohlbefinden.</div></div>
         </div>
+        <div class="legend-strip">
+          <span><i class="lg"></i>Grün: uneingeschränkt</span>
+          <span><i class="lgb"></i>Gelb: in Maßen</span>
+          <span><i class="lr"></i>Rot: nur wenig</span>
+        </div>
         <div class="wizard-actions">
           <button type="button" class="btn-secondary" id="toStep2b">Zurück</button>
           <button type="button" class="btn-primary" id="finishOnboard">Reise beginnen</button>
@@ -1222,13 +1251,12 @@ function renderDashboard(state){
         <h3>Deine grobe Tagesempfehlung</h3>
         <div class="needs-sub">${AKTIVITAET[checkin.activity].label} · ${WOHLBEFINDEN[checkin.wellbeing].emoji} ${WOHLBEFINDEN[checkin.wellbeing].label}</div>
         <div class="needs-grid">
-          <div class="need-stat"><div class="val">${t.protein} g</div><div class="lbl">Protein</div></div>
-          <div class="need-stat"><div class="val">${t.fettMin}–${t.fettMax} g</div><div class="lbl">Fett, Spielraum</div></div>
-          <div class="need-stat"><div class="val">${t.carbs} g</div><div class="lbl">Kohlenhydrate</div></div>
-          <div class="need-stat"><div class="val">${t.kcal}</div><div class="lbl">kcal, ca.</div></div>
+          <div class="need-stat"><span class="ns-icon">🥩</span><span class="ns-text"><b>${t.protein} g</b>Protein</span></div>
+          <div class="need-stat"><span class="ns-icon">🥑</span><span class="ns-text"><b>${t.fettMin}–${t.fettMax} g</b>Fett, Spielraum</span></div>
+          <div class="need-stat"><span class="ns-icon">🌾</span><span class="ns-text"><b>${t.carbs} g</b>Kohlenhydrate</span></div>
+          <div class="need-stat"><span class="ns-icon">🔥</span><span class="ns-text"><b>${t.kcal}</b>kcal, ca.</span></div>
         </div>
         <div class="fat-tip">💡 Fett ist deine Stellschraube: Iss davon nur so viel, wie du zum Sattwerden brauchst – den Rest holt sich dein Körper aus eigenen Reserven. Genau das ist beim Abnehmen erwünscht.</div>
-        <div class="needs-note">Grobe Richtwerte, keine medizinische Beratung. Sättigungsbeilagen (z.B. Zucchini, Salat, Gurke, Pak Choi) darfst du zusätzlich unbegrenzt essen.</div>
         <button class="edit-link" id="editCheckin">Angaben für heute ändern</button>
       </div>
     `;
@@ -1316,19 +1344,9 @@ function renderDashboard(state){
 
     ${checkHtml}
 
-    <div class="legend-strip">
-      <span><i class="lg"></i>Grün: uneingeschränkt</span>
-      <span><i class="lgb"></i>Gelb: in Maßen</span>
-      <span><i class="lr"></i>Rot: nur wenig</span>
-    </div>
-
     ${completeHtml}
     ${lockedNote}
     ${cardsHtml}
-
-    <div class="env-note">
-      Fortschritt wird lokal in deinem Browser gespeichert. Öffne die Datei direkt im Browser-Tab, damit der Speicher zuverlässig funktioniert.
-    </div>
 
     ${isDebugMode() && !fertig ? `
       <div class="debug-panel">
