@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Die Keto-Lernreise</title>
+<style>
+  :root{
+    --ink: #2b2a35;
+    --ink-dim: #6b6879;
+    --ink-faint: #9491a3;
+    --glass-bg: rgba(255,255,255,0.55);
+    --glass-bg-strong: rgba(255,255,255,0.78);
+    --glass-border: rgba(255,255,255,0.65);
+    --glass-shadow: 0 8px 32px rgba(80,70,140,0.12);
+    --gruen: #4f9d6e;
+    --gelb: #c8933a;
+    --rot: #c85a52;
+    --accent: #a878d1;
+    --accent2: #5fb8c9;
+    --font-display: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Consolas, monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    background:linear-gradient(180deg,#fdf9f6 0%, #f6f4fb 45%, #f2f8f6 100%);
+    color:var(--ink);
+    font-family:var(--font-body);
+    min-height:100vh;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:32px 16px 90px;
+    line-height:1.5;
+    position:relative;
+    overflow-x:hidden;
+  }
+
+  /* ---------- Bokeh-Hintergrund ---------- */
+  .bokeh{position:fixed; inset:0; overflow:hidden; z-index:-1; pointer-events:none;}
+  .orb{position:absolute; border-radius:50%; filter:blur(60px); opacity:0.55; will-change:transform;}
+  .orb1{width:340px; height:340px; background:radial-gradient(circle at 30% 30%, #ffd6e8, transparent 70%); top:-80px; left:-60px; animation:float1 26s ease-in-out infinite;}
+  .orb2{width:420px; height:420px; background:radial-gradient(circle at 40% 40%, #c9e8ff, transparent 70%); top:10%; right:-120px; animation:float2 32s ease-in-out infinite;}
+  .orb3{width:300px; height:300px; background:radial-gradient(circle at 50% 50%, #d8ffe0, transparent 70%); bottom:5%; left:-80px; animation:float3 28s ease-in-out infinite;}
+  .orb4{width:260px; height:260px; background:radial-gradient(circle at 50% 50%, #f3e0ff, transparent 70%); bottom:-60px; right:8%; animation:float1 22s ease-in-out infinite reverse;}
+  .orb5{width:220px; height:220px; background:radial-gradient(circle at 50% 50%, #fff2c9, transparent 70%); top:40%; left:38%; animation:float2 30s ease-in-out infinite;}
+  @keyframes float1{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(40px,60px) scale(1.08);}66%{transform:translate(-30px,20px) scale(0.95);}}
+  @keyframes float2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-60px,50px) scale(1.1);}}
+  @keyframes float3{0%,100%{transform:translate(0,0) scale(1);}40%{transform:translate(50px,-40px) scale(1.05);}75%{transform:translate(-20px,-70px) scale(0.92);}}
+
+  .wrap{width:100%; max-width:640px;}
+
+  .glass{
+    background:var(--glass-bg);
+    backdrop-filter:blur(18px) saturate(160%);
+    -webkit-backdrop-filter:blur(18px) saturate(160%);
+    border:1px solid var(--glass-border);
+    box-shadow:var(--glass-shadow);
+    border-radius:20px;
+  }
+
+  button{cursor:pointer; border:none; font-family:var(--font-body);}
+  input[type=text], input[type=number]{
+    background:rgba(255,255,255,0.75);
+    border:1px solid rgba(255,255,255,0.85);
+    color:var(--ink);
+    font-size:1rem;
+    padding:13px 16px;
+    border-radius:12px;
+    font-family:var(--font-body);
+    outline:none;
+    width:100%;
+  }
+  input:focus{border-color:var(--accent);}
+  .btn-primary{
+    background:linear-gradient(135deg, var(--accent), var(--accent2));
+    color:#fff;
+    font-weight:600;
+    font-size:0.98rem;
+    padding:14px 18px;
+    border-radius:12px;
+    transition:filter 0.15s, transform 0.1s;
+    box-shadow:0 6px 20px -6px rgba(150,120,200,0.55);
+  }
+  .btn-primary:hover{filter:brightness(1.06);}
+  .btn-primary:active{transform:translateY(1px);}
+  .btn-primary:disabled{opacity:0.4; cursor:not-allowed;}
+  .btn-secondary{
+    background:rgba(255,255,255,0.55);
+    color:var(--ink-dim);
+    border:1px solid rgba(255,255,255,0.8);
+    border-radius:12px;
+    padding:13px 16px;
+    font-size:0.9rem;
+  }
+  .choice-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .choice-btn{
+    background:rgba(255,255,255,0.5);
+    border:1px solid rgba(255,255,255,0.8);
+    color:var(--ink-dim);
+    border-radius:12px;
+    padding:11px 10px;
+    font-size:0.84rem;
+    flex:1;
+    min-width:90px;
+    text-align:center;
+    transition:all 0.15s;
+  }
+  .choice-btn:hover{background:rgba(255,255,255,0.85); color:var(--ink);}
+  .choice-btn.active{
+    background:linear-gradient(135deg, var(--accent), var(--accent2));
+    color:#fff;
+    border-color:transparent;
+    box-shadow:0 4px 14px -4px rgba(150,120,200,0.6);
+  }
+
+  /* ---------- Logo ---------- */
+  .logo-badge{display:flex; align-items:center; justify-content:center;}
+  .logo-badge svg{display:block;}
+  .logo-mini{width:34px; height:34px; flex-shrink:0;}
+
+  /* ---------- Onboarding Wizard ---------- */
+  .onboard{
+    min-height:78vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:20px 6px;
+  }
+  .onboard-card{
+    width:100%;
+    max-width:420px;
+    padding:36px 30px;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+  }
+  .wizard-dots{display:flex; gap:7px; margin-bottom:4px;}
+  .wizard-dots .wdot{width:7px; height:7px; border-radius:50%; background:rgba(150,140,170,0.3); transition:all 0.2s;}
+  .wizard-dots .wdot.active{background:var(--accent); width:20px; border-radius:5px;}
+  .onboard h1{font-family:var(--font-display); font-size:1.75rem; font-weight:400;}
+  .onboard h2{font-family:var(--font-display); font-size:1.3rem; font-weight:400;}
+  .onboard p.lead{color:var(--ink-dim); font-size:0.92rem; max-width:340px;}
+  .onboard form{display:flex; flex-direction:column; gap:12px; width:100%;}
+  .field-row{display:flex; gap:10px;}
+  .field-row .field{flex:1;}
+  .field-label{font-size:0.74rem; color:var(--ink-faint); text-align:left; margin-bottom:5px;}
+  .wizard-actions{display:flex; gap:10px; width:100%; margin-top:6px;}
+  .wizard-actions .btn-secondary{flex:0 0 auto;}
+  .wizard-actions .btn-primary{flex:1;}
+
+  .mini-cards{display:flex; flex-direction:column; gap:10px; width:100%; text-align:left;}
+  .mini-card{
+    display:flex; align-items:center; gap:12px;
+    background:rgba(255,255,255,0.55);
+    border:1px solid rgba(255,255,255,0.7);
+    border-radius:14px;
+    padding:12px 14px;
+  }
+  .mini-card .mc-icon{font-size:1.3rem; flex-shrink:0;}
+  .mini-card .mc-text{font-size:0.82rem; color:var(--ink-dim);}
+
+  /* ---------- Dashboard ---------- */
+  header.top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:18px;
+    padding:0 4px;
+  }
+  .top-left{display:flex; align-items:center; gap:10px;}
+  .hello{font-size:0.86rem; color:var(--ink-dim);}
+  .hello b{color:var(--ink); font-weight:700;}
+  .reset-link{
+    background:none;
+    color:var(--ink-faint);
+    font-size:0.74rem;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+
+  .ring-card{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding:20px 22px;
+    margin-bottom:14px;
+  }
+  .ring{position:relative; width:80px; height:80px; flex-shrink:0; border-radius:50%; display:flex; align-items:center; justify-content:center;}
+  .ring .hole{position:absolute; inset:6px; background:var(--glass-bg-strong); border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+  .ring .daynum{font-family:var(--font-display); font-size:1.4rem; line-height:1;}
+  .ring .dayof{font-size:0.6rem; color:var(--ink-faint); letter-spacing:0.5px;}
+  .ring-info{flex:1; min-width:0;}
+  .ring-info h2{font-family:var(--font-display); font-weight:400; font-size:1.05rem; margin-bottom:5px;}
+  .countdown{font-family:var(--font-mono); font-size:0.8rem; color:var(--gelb);}
+  .countdown.done{color:var(--gruen);}
+  .progress-dots{display:flex; gap:3px; margin-top:9px; flex-wrap:wrap;}
+  .dot{width:7px; height:7px; border-radius:50%; background:rgba(150,140,170,0.25);}
+  .dot.filled-gruen{background:var(--gruen);}
+  .dot.filled-gelb{background:var(--gelb);}
+  .dot.filled-rot{background:var(--rot);}
+  .dot.today{box-shadow:0 0 0 2px var(--glass-bg-strong), 0 0 0 3px var(--accent);}
+
+  /* ---------- Tages-Check & Tagesbedarf ---------- */
+  .check-card{padding:18px 20px; margin-bottom:14px;}
+  .check-card h3{font-family:var(--font-display); font-weight:400; font-size:1rem; margin-bottom:2px;}
+  .check-row{margin-top:14px;}
+  .check-row .row-label{font-size:0.78rem; color:var(--ink-dim); margin-bottom:8px;}
+
+  .needs-card{padding:18px 20px; margin-bottom:14px;}
+  .needs-card h3{font-family:var(--font-display); font-weight:400; font-size:1rem; margin-bottom:2px;}
+  .needs-sub{font-size:0.74rem; color:var(--ink-faint); margin-bottom:12px;}
+  .needs-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:8px;}
+  .need-stat{background:rgba(255,255,255,0.55); border-radius:12px; padding:10px 10px; text-align:center;}
+  .need-stat.wide{grid-column:span 2;}
+  .need-stat .val{font-family:var(--font-display); font-size:1.15rem; white-space:nowrap;}
+  .need-stat .lbl{font-size:0.66rem; color:var(--ink-faint); margin-top:2px;}
+  .fat-tip{
+    display:flex; gap:9px; align-items:flex-start;
+    background:rgba(168,120,209,0.1);
+    border-left:3px solid var(--accent);
+    border-radius:10px;
+    padding:10px 12px;
+    margin-top:11px;
+    font-size:0.76rem;
+    color:var(--ink-dim);
+    line-height:1.5;
+  }
+  .needs-note{font-size:0.68rem; color:var(--ink-faint); margin-top:10px; line-height:1.5;}
+  .edit-link{
+    background:none; color:var(--accent); font-size:0.72rem;
+    text-decoration:underline; text-underline-offset:3px; margin-top:8px; display:inline-block;
+  }
+
+  .legend-strip{
+    display:flex; gap:14px; margin-bottom:16px; padding:9px 16px;
+    font-size:0.72rem; color:var(--ink-dim); flex-wrap:wrap;
+    background:rgba(255,255,255,0.35); border-radius:14px;
+  }
+  .legend-strip span{display:flex; align-items:center; gap:5px;}
+  .legend-strip i{width:8px; height:8px; border-radius:50%; display:inline-block;}
+  .legend-strip .lg{background:var(--gruen);}
+  .legend-strip .lgb{background:var(--gelb);}
+  .legend-strip .lr{background:var(--rot);}
+
+  /* ---------- Tage (Akkordeon) ---------- */
+  .day-block{margin-top:14px;}
+  .day-header{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    cursor:pointer;
+    padding:10px 4px;
+  }
+  .day-header-left{display:flex; align-items:center; gap:9px;}
+  .day-chevron{font-size:0.7rem; color:var(--ink-faint); transition:transform 0.15s;}
+  .day-title{font-family:var(--font-display); font-size:0.95rem; color:var(--ink-dim);}
+  .today-pill{
+    font-size:0.6rem; background:linear-gradient(135deg, var(--accent), var(--accent2));
+    color:#fff; padding:2px 8px; border-radius:20px; font-weight:700;
+  }
+  .day-header::after{content:none;}
+  .recipe-link{
+    font-size:0.7rem; color:var(--accent); white-space:nowrap; cursor:pointer;
+    background:rgba(168,120,209,0.12); padding:5px 10px; border-radius:20px; flex-shrink:0;
+  }
+  .day-tip{font-size:0.77rem; color:var(--ink-faint); margin:0 4px 10px; font-style:italic;}
+
+  .food-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(146px,1fr));
+    gap:9px;
+  }
+  .food-card{
+    background:var(--glass-bg);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border:1px solid var(--glass-border);
+    border-left:3px solid var(--gruen);
+    border-radius:14px;
+    padding:12px 13px;
+    cursor:pointer;
+    transition:transform 0.12s;
+  }
+  .food-card:hover{transform:translateY(-2px);}
+  .food-card.gelb{border-left-color:var(--gelb);}
+  .food-card.rot{border-left-color:var(--rot);}
+  .food-card .fname{font-size:0.87rem; font-weight:600; display:flex; align-items:center; gap:7px;}
+  .food-card .femoji{font-size:1.15rem;}
+  .food-card .fmeta{font-size:0.68rem; color:var(--ink-faint); margin-top:4px;}
+  .food-card .ftag{display:inline-block; margin-top:7px; font-size:0.6rem; letter-spacing:0.4px; text-transform:uppercase; color:var(--gruen);}
+  .food-card.gelb .ftag{color:var(--gelb);}
+  .food-card.rot .ftag{color:var(--rot);}
+  .food-card .funlim{display:inline-block; margin-top:5px; margin-left:5px; font-size:0.58rem; color:var(--accent2); font-weight:600;}
+
+  .food-card.locked{position:relative; border-left-color:rgba(168,120,209,0.6); overflow:hidden;}
+  .food-card.locked .locked-inner{filter:blur(7px); opacity:0.6; user-select:none;}
+  .food-card.locked .unlock-overlay{
+    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:3px; background:rgba(255,255,255,0.4); text-align:center; padding:8px;
+  }
+  .food-card.locked .unlock-icon{font-size:1.3rem;}
+  .food-card.locked .unlock-text{font-size:0.66rem; color:var(--ink); font-weight:600;}
+  .food-card.locked .unlock-sub{font-size:0.58rem; color:var(--ink-dim);}
+  .food-card.locked:hover .unlock-overlay{background:rgba(255,255,255,0.55);}
+
+  .new-badge{display:inline-block; font-size:0.58rem; background:linear-gradient(135deg, var(--accent), var(--accent2)); color:#fff; padding:2px 6px; border-radius:6px; margin-left:5px; font-weight:700;}
+
+  .locked-note{color:var(--ink-faint); font-size:0.8rem; padding:14px 18px; margin-bottom:6px; border-radius:14px;}
+
+  /* ---------- Modal ---------- */
+  .overlay{position:fixed; inset:0; background:rgba(70,60,90,0.28); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:20px; z-index:50;}
+  .overlay.hidden{display:none;}
+  .modal{
+    background:rgba(255,255,255,0.88);
+    backdrop-filter:blur(24px) saturate(180%);
+    -webkit-backdrop-filter:blur(24px) saturate(180%);
+    border:1px solid rgba(255,255,255,0.9);
+    border-radius:20px;
+    max-width:440px; width:100%;
+    padding:24px;
+    max-height:85vh;
+    overflow-y:auto;
+    box-shadow:0 20px 60px -12px rgba(80,60,120,0.35);
+  }
+  .modal-head{display:flex; align-items:center; gap:12px; margin-bottom:6px;}
+  .modal-head .femoji{font-size:1.9rem;}
+  .modal-head h3{font-family:var(--font-display); font-weight:400; font-size:1.2rem;}
+  .modal .tag-line{font-size:0.68rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--gruen); margin-bottom:14px;}
+  .modal.gelb .tag-line{color:var(--gelb);}
+  .modal.rot .tag-line{color:var(--rot);}
+  .modal p.desc{font-size:0.88rem; color:var(--ink-dim); margin-bottom:14px;}
+  table.macro{width:100%; border-collapse:collapse; font-family:var(--font-mono); font-size:0.78rem;}
+  table.macro td{padding:6px 4px; border-bottom:1px solid rgba(150,140,170,0.2);}
+  table.macro td:first-child{color:var(--ink-faint);}
+  table.macro td:last-child{text-align:right;}
+  .macro-note{font-size:0.66rem; color:var(--ink-faint); margin-top:9px;}
+  .close-btn{margin-top:18px; width:100%; background:rgba(255,255,255,0.6); color:var(--ink-dim); border:1px solid rgba(255,255,255,0.8); border-radius:11px; padding:11px; font-size:0.84rem;}
+
+  .recipe-block{margin-bottom:16px; padding-bottom:14px; border-bottom:1px solid rgba(150,140,170,0.2);}
+  .recipe-block:last-of-type{border-bottom:none; margin-bottom:4px;}
+  .recipe-block .rmeal{font-size:0.64rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--accent); font-weight:700;}
+  .recipe-block h4{font-family:var(--font-display); font-weight:400; font-size:1.02rem; margin:4px 0 4px;}
+  .recipe-block .rdesc{font-size:0.8rem; color:var(--ink-dim); margin-bottom:8px;}
+  .recipe-block ul.zutaten{list-style:none; font-size:0.8rem; margin-bottom:8px;}
+  .recipe-block ul.zutaten li{padding:3px 0; display:flex; justify-content:space-between; gap:10px;}
+  .recipe-block ul.zutaten li .zname{color:var(--ink);}
+  .recipe-block ul.zutaten li .zamt{color:var(--ink-faint); white-space:nowrap;}
+  .recipe-block ol.schritte{font-size:0.78rem; color:var(--ink-dim); padding-left:18px;}
+  .recipe-block ol.schritte li{margin-bottom:4px;}
+  .recipe-intro{font-size:0.76rem; color:var(--ink-faint); margin-bottom:12px; line-height:1.5;}
+
+  /* ---------- Completion ---------- */
+  .complete-card{text-align:center; padding:28px 22px; margin-bottom:16px;}
+  .complete-card h2{font-family:var(--font-display); font-weight:400; font-size:1.3rem; margin-bottom:9px;}
+  .complete-card p{color:var(--ink-dim); font-size:0.88rem;}
+  .wellbeing-summary{
+    margin-top:16px; padding-top:16px; border-top:1px solid rgba(150,140,170,0.2);
+    text-align:left;
+  }
+  .wellbeing-summary h4{font-family:var(--font-display); font-weight:400; font-size:0.95rem; margin-bottom:8px; text-align:center;}
+  .wb-counts{display:flex; justify-content:center; gap:16px; margin-bottom:8px;}
+  .wb-counts div{text-align:center; font-size:0.78rem; color:var(--ink-dim);}
+  .wb-counts .wb-num{font-family:var(--font-display); font-size:1.2rem; display:block;}
+  .wellbeing-summary .wb-trend{font-size:0.8rem; color:var(--ink-dim); text-align:center;}
+
+  .env-note{font-size:0.68rem; color:var(--ink-faint); text-align:center; margin-top:30px; line-height:1.6;}
+
+  .debug-panel{margin-top:14px; padding:12px 14px; border:1px dashed var(--rot); border-radius:12px; background:rgba(200,90,82,0.06); font-size:0.74rem; color:var(--ink-dim); display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .debug-panel button{background:var(--rot); color:#fff; border-radius:8px; padding:8px 12px; font-size:0.72rem; white-space:nowrap;}
+
+  @media (max-width:420px){
+    .ring-card{flex-direction:column; text-align:center;}
+    .needs-grid{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bokeh">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="orb orb4"></div>
+  <div class="orb orb5"></div>
+</div>
+
+<div class="wrap" id="app"></div>
+
+<div class="overlay hidden" id="overlay">
+  <div class="modal" id="modalBody"></div>
+</div>
+
+<script>
+/* ============ LOGO ============ */
+function logoSvg(size){
+  return `
+  <svg width="${size}" height="${size}" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#a878d1"/>
+        <stop offset="1" stop-color="#5fb8c9"/>
+      </linearGradient>
+    </defs>
+    <circle cx="50" cy="50" r="47" fill="url(#lg1)" opacity="0.13"/>
+    <circle cx="50" cy="50" r="47" fill="none" stroke="url(#lg1)" stroke-width="1.6"/>
+    <path d="M50 18 C38 34 31 46 31 58 C31 71 39 80 50 80 C61 80 69 71 69 58 C69 46 62 34 50 18 Z
+             M50 29 C56 40 60 49 60 57 C60 65 55 71 50 71 C45 71 41 66 41 59 C41 54 43 48 47 42"
+          fill="url(#lg1)"/>
+  </svg>`;
+}
+
+/* ============ TAGE & LEBENSMITTEL ============ */
+const TAGE = [
+ { tag:1, tipp:"Trink gleich morgens ein großes Glas Wasser – über Nacht verlierst du Flüssigkeit, und guter Start heißt guter Tag.",
+   items:[
+    {id:"olivenoel", name:"Olivenöl", emoji:"🫒", kategorie:"Fett", ampel:"gruen", unlimited:false,
+      kcal:884, fett:100, protein:0, kh:0,
+      desc:"Reines Fett ohne Kohlenhydrate. Olivenöl liefert einfach ungesättigte Fettsäuren und ist die Basis fast jeder Keto-Mahlzeit – es sättigt, ohne den Blutzucker zu beeinflussen."},
+    {id:"zucchini", name:"Zucchini", emoji:"🥒", kategorie:"Gemüse", ampel:"gruen", unlimited:true,
+      kcal:17, fett:0.3, protein:1.2, kh:3.1,
+      desc:"Eine echte Sättigungsbeilage: sehr wenig Kohlenhydrate, viel Wasser und Volumen. Von Zucchini darfst du wirklich so viel essen, wie du möchtest."},
+    {id:"huehnchen", name:"Hühnchenbrust", emoji:"🍗", kategorie:"Protein", ampel:"gruen", unlimited:false,
+      kcal:165, fett:3.6, protein:31, kh:0,
+      desc:"Mageres Protein pur. Hühnchenbrust liefert kaum Fett und keine Kohlenhydrate – ideal, um Sättigung über Eiweiß statt über Fett oder Zucker zu erreichen."},
+   ]},
+ { tag:2, tipp:"Iss langsam und kaue gründlich – das Sättigungsgefühl braucht rund 15–20 Minuten, um im Gehirn anzukommen.",
+   items:[
+    {id:"eier", name:"Eier", emoji:"🥚", kategorie:"Protein", ampel:"gruen", unlimited:false,
+      kcal:155, fett:11, protein:13, kh:1.1,
+      desc:"Ein nahezu perfektes Lebensmittel: hochwertiges Eiweiß, gesunde Fette und fast keine Kohlenhydrate. Eier liefern zudem Cholin, wichtig für Gehirn und Zellen."},
+    {id:"avocado", name:"Avocado", emoji:"🥑", kategorie:"Frucht", ampel:"gelb", unlimited:false,
+      kcal:160, fett:15, protein:2, kh:9,
+      desc:"Sehr fettreich und trotzdem eine Frucht mit messbaren Kohlenhydraten (davon viele Ballaststoffe). Eine halbe Avocado ist ideal, eine ganze am Tag kann die Kohlenhydratgrenze schon ausreizen."},
+   ]},
+ { tag:3, tipp:"Plane deine Mahlzeiten grob im Voraus – wer nicht plant, greift bei Hunger schneller zu schnellen Kohlenhydraten.",
+   items:[
+    {id:"butter", name:"Butter", emoji:"🧈", kategorie:"Fett", ampel:"gruen", unlimited:false,
+      kcal:717, fett:81, protein:0.9, kh:0.1,
+      desc:"Fast reines gesättigtes Fett ohne Kohlenhydrate. In Maßen ein guter Energielieferant, sollte aber nicht mit Öl gleichzeitig literweise verzehrt werden – die Kalorien summieren sich schnell."},
+    {id:"spinat", name:"Spinat", emoji:"🥬", kategorie:"Gemüse", ampel:"gruen", unlimited:true,
+      kcal:23, fett:0.4, protein:2.9, kh:3.6,
+      desc:"Sehr nährstoffdicht bei minimalen Kohlenhydraten: viel Eisen, Magnesium und Vitamin K. Blattgemüse wie Spinat ist eine Sättigungsbeilage, von der du wirklich reichlich essen darfst."},
+   ]},
+ { tag:4, tipp:"Achte auf ausreichend Schlaf – Schlafmangel erhöht Heißhunger auf Zucker und Kohlenhydrate spürbar.",
+   items:[
+    {id:"lachs", name:"Lachs", emoji:"🐟", kategorie:"Protein", ampel:"gruen", unlimited:false,
+      kcal:208, fett:13, protein:20, kh:0,
+      desc:"Fettreicher Fisch mit Omega-3-Fettsäuren, die entzündungshemmend wirken. Kombiniert hochwertiges Protein mit gesunden Fetten – ohne jede Kohlenhydratlast."},
+    {id:"brokkoli", name:"Brokkoli", emoji:"🥦", kategorie:"Gemüse", ampel:"gruen", unlimited:true,
+      kcal:34, fett:0.4, protein:2.8, kh:7,
+      desc:"Etwas mehr Kohlenhydrate als Spinat, aber größtenteils Ballaststoffe. Brokkoli liefert Vitamin C und Sulforaphan und zählt trotzdem zu den Sättigungsbeilagen, die du reichlich essen darfst."},
+   ]},
+ { tag:5, tipp:"Bewege dich nach dem Essen ein paar Minuten, z.B. ein kurzer Spaziergang – das hilft dem Blutzucker, stabil zu bleiben.",
+   items:[
+    {id:"mandeln", name:"Mandeln", emoji:"🌰", kategorie:"Nuss", ampel:"gelb", unlimited:false,
+      kcal:579, fett:50, protein:21, kh:22,
+      desc:"Nüsse sind kalorien- und fettreich – gut in kleinen Mengen. Eine Handvoll ist eine Portion, eine ganze Tüte sprengt schnell das Tageskonto an Kohlenhydraten und Kalorien."},
+    {id:"blumenkohl", name:"Blumenkohl", emoji:"🥦", kategorie:"Gemüse", ampel:"gruen", unlimited:true,
+      kcal:25, fett:0.3, protein:1.9, kh:5,
+      desc:"Der Keto-Ersatz für Reis und Kartoffelpüree. Sehr kohlenhydratarm, vielseitig einsetzbar und eine Sättigungsbeilage, die uneingeschränkt erlaubt ist."},
+   ]},
+ { tag:6, tipp:"Trinke über den Tag verteilt mindestens 2 Liter Wasser – Keto wirkt entwässernd, dein Körper braucht mehr Flüssigkeit als sonst.",
+   items:[
+    {id:"rind", name:"Rindfleisch", emoji:"🥩", kategorie:"Protein", ampel:"gruen", unlimited:false,
+      kcal:250, fett:15, protein:26, kh:0,
+      desc:"Ein klassisches Keto-Lebensmittel: viel Protein, natürliches Fett, keine Kohlenhydrate. Liefert außerdem Eisen und Vitamin B12."},
+    {id:"gurke", name:"Gurke", emoji:"🥒", kategorie:"Gemüse", ampel:"gruen", unlimited:true,
+      kcal:15, fett:0.1, protein:0.7, kh:3.6,
+      desc:"Fast nur Wasser und ein paar Kohlenhydrate. Gurke eignet sich als Sättigungsbeilage, um Frische zu schaffen, ohne die Kalorienbilanz zu belasten."},
+   ]},
+ { tag:7, tipp:"Eine Woche geschafft! Schau nicht nur auf die Waage, sondern auch auf Energie, Schlaf und Konzentration – das sind die ersten echten Keto-Effekte.",
+   items:[
+    {id:"kaese", name:"Cheddar-Käse", emoji:"🧀", kategorie:"Milchprodukt", ampel:"gruen", unlimited:false,
+      kcal:403, fett:33, protein:25, kh:1.3,
+      desc:"Hoher Fett- und Proteingehalt bei minimalen Kohlenhydraten – ein Keto-Grundnahrungsmittel. Trotzdem kalorienreich, also eher als Ergänzung statt als Hauptmenge."},
+    {id:"paprika", name:"Paprika", emoji:"🫑", kategorie:"Gemüse", ampel:"gelb", unlimited:false,
+      kcal:31, fett:0.3, protein:1, kh:6,
+      desc:"Süßer als anderes Gemüse und dadurch kohlenhydratreicher. Paprika liefert viel Vitamin C, sollte aber in Maßen bleiben, nicht in Mengen wie Gurke oder Blumenkohl."},
+   ]},
+ { tag:8, tipp:"Frische Kräuter statt Fertigsaucen: Sie bringen Geschmack ohne versteckten Zucker und ohne unnötige Kalorien.",
+   items:[
+    {id:"walnuesse", name:"Walnüsse", emoji:"🌰", kategorie:"Nuss", ampel:"gelb", unlimited:false,
+      kcal:654, fett:65, protein:15, kh:14,
+      desc:"Reich an Omega-3-Fettsäuren, aber wie alle Nüsse sehr energiedicht. Eine kleine Handvoll reicht, um satt zu machen – mehr treibt schnell die Kalorienzahl nach oben."},
+    {id:"kokosoel", name:"Kokosöl", emoji:"🥥", kategorie:"Fett", ampel:"gruen", unlimited:false,
+      kcal:862, fett:100, protein:0, kh:0,
+      desc:"Reines Fett, reich an mittelkettigen Fettsäuren (MCT), die der Körper schnell zur Energie verarbeiten kann. Kohlenhydratfrei, aber wie jedes Öl sehr kalorienreich."},
+    {id:"petersilie", name:"Petersilie", emoji:"🌿", kategorie:"Kraut", ampel:"gruen", unlimited:true,
+      kcal:36, fett:0.8, protein:3, kh:6,
+      desc:"Reich an Vitamin C und K. Als frisches Kraut wird sie nur in kleinen Mengen verwendet, verfeinert Gerichte aber ohne nennenswerte Kohlenhydrate oder Kalorien."},
+   ]},
+ { tag:9, tipp:"Miss deinen Erfolg nicht nur auf der Waage – auch Kleidergröße, Energielevel und Blutwerte zählen.",
+   items:[
+    {id:"thunfisch", name:"Thunfisch", emoji:"🐟", kategorie:"Protein", ampel:"gruen", unlimited:false,
+      kcal:132, fett:1, protein:28, kh:0,
+      desc:"Sehr mageres Protein mit kaum Fett und keinen Kohlenhydraten. Praktisch, sättigend und einfach zu kombinieren."},
+    {id:"champignons", name:"Champignons", emoji:"🍄", kategorie:"Gemüse", ampel:"gruen", unlimited:true,
+      kcal:22, fett:0.3, protein:3.1, kh:3.3,
+      desc:"Kohlenhydratarm und proteinreicher als die meisten Gemüsesorten. Champignons liefern zusätzlich B-Vitamine und zählen zu den Sättigungsbeilagen."},
+   ]},
+ { tag:10, tipp:"Elektrolyte nicht vergessen: Auf Keto scheidet der Körper mehr Natrium aus. Etwas mehr salzen als sonst ist meist sinnvoll.",
+   items:[
+    {id:"speck", name:"Speck", emoji:"🥓", kategorie:"Protein", ampel:"gelb", unlimited:false,
+      kcal:541, fett:42, protein:37, kh:1.4,
+      desc:"Kohlenhydratarm, aber stark verarbeitet, sehr salzig und kalorienreich. Ein paar Streifen als Geschmacksträger sind ok, als Hauptgericht in Mengen nicht empfehlenswert."},
+    {id:"sahne", name:"Schlagsahne", emoji:"🥛", kategorie:"Fett", ampel:"gelb", unlimited:false,
+      kcal:340, fett:36, protein:2.1, kh:2.8,
+      desc:"Sehr fettreich und leicht überdosiert – ein Schuss in Kaffee oder Soße reicht. Wer sie literweise trinkt, sprengt schnell die Kalorienbilanz."},
+    {id:"meersalz", name:"Meersalz", emoji:"🧂", kategorie:"Mineralstoff", ampel:"gruen", unlimited:true,
+      kcal:0, fett:0, protein:0, kh:0,
+      desc:"Kein Kalorienlieferant, aber essenziell für den Elektrolythaushalt. Wer weniger Insulin ausschüttet, verliert mehr Natrium über die Niere – bewusst salzen beugt der sogenannten „Keto-Grippe“ vor."},
+   ]},
+ { tag:11, tipp:"Iss bunt: Je unterschiedlicher die Gemüsefarben auf dem Teller, desto breiter das Spektrum an Mikronährstoffen.",
+   items:[
+    {id:"macadamia", name:"Macadamianüsse", emoji:"🌰", kategorie:"Nuss", ampel:"gruen", unlimited:false,
+      kcal:718, fett:76, protein:8, kh:14,
+      desc:"Die kohlenhydratärmste gängige Nusssorte – der Großteil der Kohlenhydrate ist Ballaststoff. Trotzdem kalorienreich, aber großzügiger einzustufen als Mandel oder Walnuss."},
+    {id:"salat", name:"Grüner Salat", emoji:"🥗", kategorie:"Gemüse", ampel:"gruen", unlimited:true,
+      kcal:15, fett:0.2, protein:1.4, kh:2.9,
+      desc:"Blattsalat ist fast kalorienfrei und liefert Volumen, Wasser und Vitamine. Eine der besten Sättigungsbeilagen, von der wirklich beliebig viel gegessen werden darf."},
+   ]},
+ { tag:12, tipp:"Stress senkt oft unbemerkt den Erfolg von Ernährungsumstellungen – kurze Entspannungspausen wirken messbar auf Heißhunger.",
+   items:[
+    {id:"lamm", name:"Lammfleisch", emoji:"🍖", kategorie:"Protein", ampel:"gruen", unlimited:false,
+      kcal:294, fett:21, protein:25, kh:0,
+      desc:"Fettreicheres rotes Fleisch mit viel Protein und ohne Kohlenhydrate. Passt gut ins Keto-Muster, ist aber kalorisch dichter als magere Hähnchenbrust."},
+    {id:"oliven", name:"Oliven", emoji:"🫒", kategorie:"Fett", ampel:"gelb", unlimited:false,
+      kcal:115, fett:11, protein:0.8, kh:6,
+      desc:"Kohlenhydratarm, aber sehr salzreich. Als Snack in kleiner Menge unproblematisch, in großen Mengen kann der Salzgehalt spürbar werden."},
+    {id:"rosmarin", name:"Rosmarin", emoji:"🌿", kategorie:"Kraut", ampel:"gruen", unlimited:true,
+      kcal:131, fett:6, protein:3, kh:20,
+      desc:"Ein aromatisches, antioxidatives Kraut. Es wird nur in kleinen Mengen verwendet und veredelt Fleisch, Fisch und Öle, ohne die Kalorienbilanz zu beeinflussen."},
+   ]},
+ { tag:13, tipp:"Höre auf dein Sättigungsgefühl statt auf einen fixen Tellerinhalt – Keto sättigt oft schon bei kleineren Portionen.",
+   items:[
+    {id:"sardinen", name:"Sardinen", emoji:"🐟", kategorie:"Protein", ampel:"gruen", unlimited:false,
+      kcal:208, fett:11, protein:25, kh:0,
+      desc:"Kleiner Fisch, große Nährstoffdichte: Omega-3, Kalzium (durch die Gräten) und Protein ohne Kohlenhydrate. Ein unterschätztes Keto-Lebensmittel."},
+    {id:"sellerie", name:"Sellerie", emoji:"🥬", kategorie:"Gemüse", ampel:"gruen", unlimited:true,
+      kcal:16, fett:0.2, protein:0.7, kh:3,
+      desc:"Fast reines Wasser mit ein wenig Ballaststoff. Sellerie eignet sich hervorragend als Sättigungsbeilage, ohne dass Kalorien oder Kohlenhydrate ins Gewicht fallen."},
+   ]},
+ { tag:14, tipp:"Zwei Wochen geschafft! Bewusster Genuss gehört dazu – ein kleines Stück gute Schokolade ist kein Rückschritt, sondern Teil eines nachhaltigen Weges.",
+   items:[
+    {id:"schokolade", name:"Dunkle Schokolade (85%)", emoji:"🍫", kategorie:"Süßes", ampel:"rot", unlimited:false,
+      kcal:598, fett:43, protein:7.8, kh:46,
+      desc:"Auch bei 85% Kakaoanteil steckt noch deutlich Zucker drin. Ein bis zwei kleine Stücke sind als bewusster Genuss vertretbar – eine ganze Tafel sprengt die Kohlenhydratgrenze eines ganzen Tages."},
+    {id:"himbeeren", name:"Himbeeren", emoji:"🫐", kategorie:"Frucht", ampel:"rot", unlimited:false,
+      kcal:52, fett:0.7, protein:1.2, kh:12,
+      desc:"Süßer als anderes Gemüse und dadurch kohlenhydratreicher. Himbeeren sind gesünder als viele andere Früchte, liefern aber pro Portion deutlich mehr Kohlenhydrate – eine kleine Handvoll, keine Schale."},
+    {id:"zimt", name:"Zimt", emoji:"🟤", kategorie:"Gewürz", ampel:"gruen", unlimited:true,
+      kcal:247, fett:1.2, protein:4, kh:81,
+      desc:"Wird nur in Prisen verwendet und kann in dieser Menge helfen, den Blutzucker etwas zu regulieren. Gibt süßen Gerichten Aroma – ganz ohne zugesetzten Zucker."},
+   ]},
+ { tag:15, tipp:"Proteinquellen über den Tag verteilen statt in einer Mahlzeit zu bündeln – das hält Sättigung und Muskelaufbau konstanter.",
+   items:[
+    {id:"magerquark", name:"Magerquark", emoji:"🥣", kategorie:"Milchprodukt", ampel:"gruen", unlimited:false,
+      kcal:67, fett:0.2, protein:12, kh:3.8,
+      desc:"Sehr proteinreich und kalorienarm, mit moderaten Kohlenhydraten. Vielseitig kombinierbar – herzhaft mit Kräutern oder als Basis für ein schnelles, sättigendes Frühstück."},
+    {id:"leinsamen", name:"Leinsamen (geschrotet)", emoji:"🌾", kategorie:"Samen", ampel:"gelb", unlimited:false,
+      kcal:534, fett:42, protein:18, kh:29,
+      desc:"Sehr ballaststoffreich, was die tatsächlich verwertbaren Kohlenhydrate deutlich senkt. Trotzdem kalorienreich – ein bis zwei Esslöffel sind eine sinnvolle Portion."},
+    {id:"pfeffer", name:"Pfeffer", emoji:"⚫", kategorie:"Gewürz", ampel:"gruen", unlimited:true,
+      kcal:251, fett:3.3, protein:10, kh:64,
+      desc:"Ein klassisches Gewürz in Alltagsmengen praktisch kalorienfrei. Regt die Verdauung an und verstärkt den Geschmack anderer Zutaten."},
+   ]},
+ { tag:16, tipp:"Nicht jeder Hunger ist echter Hunger – oft hilft ein Glas Wasser oder eine Tasse Brühe, um Durst von Appetit zu unterscheiden.",
+   items:[
+    {id:"joghurt", name:"Griechischer Joghurt", emoji:"🥛", kategorie:"Milchprodukt", ampel:"gruen", unlimited:false,
+      kcal:97, fett:5, protein:9, kh:4,
+      desc:"Ungesüßt und vollfett ist er ein solider Keto-Baustein: cremig, proteinreich und mit moderaten Kohlenhydraten. Achte beim Kauf auf die ungesüßte Variante."},
+    {id:"sesam", name:"Sesam", emoji:"🌱", kategorie:"Samen", ampel:"gelb", unlimited:false,
+      kcal:573, fett:50, protein:18, kh:23,
+      desc:"Kleine Samen mit großer Nährstoffdichte, unter anderem Kalzium. Wie alle Samen kalorienreich – als Topping oder in Öl-Form in kleinen Mengen ideal."},
+    {id:"ingwer", name:"Ingwer", emoji:"🫚", kategorie:"Gewürz", ampel:"gruen", unlimited:true,
+      kcal:80, fett:0.8, protein:1.8, kh:18,
+      desc:"Wirkt verdauungsfördernd und leicht entzündungshemmend. Wird nur in kleinen Mengen verwendet und bringt Schärfe in asiatisch inspirierte Gerichte."},
+   ]},
+ { tag:17, tipp:"Fertigprodukte enthalten oft versteckten Zucker, auch in herzhaften Varianten – ein Blick auf die Zutatenliste lohnt sich immer.",
+   items:[
+    {id:"parmesan", name:"Parmesan", emoji:"🧀", kategorie:"Milchprodukt", ampel:"gelb", unlimited:false,
+      kcal:431, fett:29, protein:38, kh:4.1,
+      desc:"Sehr protein- und kalorienreich mit wenig Kohlenhydraten, aber auch sehr salzig. Ein paar geriebene Späne reichen meist für den vollen Geschmack."},
+    {id:"radieschen", name:"Radieschen", emoji:"🔴", kategorie:"Gemüse", ampel:"gruen", unlimited:true,
+      kcal:16, fett:0.1, protein:0.7, kh:2,
+      desc:"Knackig, scharf-würzig und fast kohlenhydratfrei. Eine ideale Sättigungsbeilage oder ein schneller Snack zwischendurch, uneingeschränkt erlaubt."},
+   ]},
+ { tag:18, tipp:"Kopfschmerzen oder Müdigkeit in den ersten Wochen? Das ist oft die „Keto-Grippe“ – meist hilft mehr Salz, Magnesium und Flüssigkeit.",
+   items:[
+    {id:"tofu", name:"Tofu (natur, fest)", emoji:"🧊", kategorie:"Protein", ampel:"gruen", unlimited:false,
+      kcal:76, fett:4.8, protein:8, kh:1.9,
+      desc:"Eine gute pflanzliche Proteinquelle mit wenig Kohlenhydraten. Nimmt Gewürze und Marinaden gut an und lässt sich vielseitig anbraten oder schmoren."},
+    {id:"pakchoi", name:"Pak Choi", emoji:"🥬", kategorie:"Gemüse", ampel:"gruen", unlimited:true,
+      kcal:13, fett:0.2, protein:1.5, kh:1.2,
+      desc:"Ein sehr kohlenhydratarmer Kohl mit knackigem Stiel und zartem Blatt. Eine echte Sättigungsbeilage, die uneingeschränkt gegessen werden darf."},
+    {id:"bruehe", name:"Gemüsebrühe (klar, selbstgemacht)", emoji:"🍲", kategorie:"Brühe", ampel:"gruen", unlimited:true,
+      kcal:8, fett:0.2, protein:0.5, kh:1,
+      desc:"Fast kalorienfrei, aber reich an Natrium und Kalium. Eine warme Tasse Brühe liefert Elektrolyte und Flüssigkeit – besonders in der Anfangsphase von Keto wertvoll."},
+   ]},
+ { tag:19, tipp:"Auch an Keto-Tagen gilt: Vielfalt schlägt Monotonie. Wechsle Proteinquellen und Gemüse regelmäßig durch, für Nährstoffe und Motivation.",
+   items:[
+    {id:"skyr", name:"Skyr", emoji:"🥣", kategorie:"Milchprodukt", ampel:"gruen", unlimited:false,
+      kcal:66, fett:0.2, protein:11, kh:4,
+      desc:"Ein isländisches Milchprodukt, ähnlich Joghurt, aber noch proteinreicher und kalorienärmer. Ein hervorragender Baustein für ein sättigendes, mageres Frühstück."},
+    {id:"chiasamen", name:"Chiasamen", emoji:"⚪", kategorie:"Samen", ampel:"gelb", unlimited:false,
+      kcal:486, fett:31, protein:17, kh:42,
+      desc:"Der Großteil der Kohlenhydrate ist Ballaststoff, quillt in Flüssigkeit stark auf. Sehr kalorienreich – ein Esslöffel in Joghurt oder Skyr ist eine gute Portion."},
+   ]},
+ { tag:20, tipp:"Achte besonders in dieser Phase auf Magnesium (z.B. über grünes Gemüse, Kürbiskerne oder Nüsse) – es unterstützt Muskeln und Schlaf.",
+   items:[
+    {id:"mandelmehl", name:"Mandelmehl (entölt)", emoji:"🌾", kategorie:"Nuss", ampel:"gelb", unlimited:false,
+      kcal:400, fett:12, protein:40, kh:18,
+      desc:"Eine kohlenhydratarme Mehlalternative mit viel Protein und Ballaststoffen. Ideal zum Backen und Binden, aber wegen der Kaloriendichte nur in Maßen."},
+    {id:"leinoel", name:"Leinöl", emoji:"🫙", kategorie:"Fett", ampel:"gruen", unlimited:false,
+      kcal:884, fett:100, protein:0, kh:0,
+      desc:"Reines Fett mit besonders viel pflanzlichem Omega-3 (ALA). Sollte kalt verwendet werden und ist wie jedes Öl sehr kalorienreich – ein Esslöffel genügt."},
+    {id:"magnesium", name:"Magnesiumreiche Lebensmittel", emoji:"🧬", kategorie:"Mineralstoff", ampel:"gruen", unlimited:true,
+      kcal:0, fett:0, protein:0, kh:0,
+      desc:"Kürbiskerne, Mandeln und grünes Blattgemüse liefern auf natürliche Weise Magnesium. Es unterstützt Muskeln, Nerven und Schlaf – bei anhaltenden Wadenkrämpfen kann eine gezielte Ergänzung sinnvoll sein, am besten nach Rücksprache mit einer Ärztin oder einem Arzt."},
+   ]},
+ { tag:21, tipp:"Geschafft! Nimm dir einen Moment, um zurückzublicken: 21 Tage, in denen du gelernt hast, worauf es bei deiner Ernährung wirklich ankommt.",
+   items:[
+    {id:"heidelbeeren", name:"Wilde Heidelbeeren", emoji:"🫐", kategorie:"Frucht", ampel:"gelb", unlimited:false,
+      kcal:44, fett:0.3, protein:0.7, kh:5.6,
+      desc:"Wichtiger Hinweis: gemeint sind wilde Heidelbeeren, nicht Kultur­heidelbeeren aus dem Supermarkt. Wilde Heidelbeeren sind kleiner, intensiver im Geschmack, deutlich zuckerärmer und reicher an Anthocyanen als die großen Kulturheidelbeeren."},
+    {id:"kuerbiskerne", name:"Kürbiskerne", emoji:"🎃", kategorie:"Samen", ampel:"gelb", unlimited:false,
+      kcal:559, fett:49, protein:30, kh:11,
+      desc:"Ein proteinreicher, magnesiumreicher Snack. Kalorien- und fettreich wie alle Kerne, deshalb ist eine kleine Handvoll die passende Portion."},
+   ]},
+];
+
+const AMPEL_LABEL = {
+  gruen:"Grün — iss so viel du willst",
+  gelb:"Gelb — iss in Maßen",
+  rot:"Rot — iss nur wenig, bewusst",
+};
+
+/* ============ REZEPTE (nur bereits freigeschaltete Lebensmittel des jeweiligen Tages) ============ */
+const REZEPTE = {
+ 1:{
+  morgen:{title:"Warme Zucchini-Hühnchen-Schale", desc:"Ein einfacher, warmer Einstieg – dein erstes Frühstück mit nur drei Zutaten.",
+    zutaten:[{name:"Hühnchenbrust",base:100,unit:"g",scale:true},{name:"Zucchini",unlimited:true},{name:"Olivenöl",base:10,unit:"ml"}],
+    schritte:["Zucchini in Olivenöl weich dünsten.","Hühnchenwürfel dazugeben und gar braten.","Warm servieren, nach Belieben salzen."]},
+  mittag:{title:"Gebratene Hühnchenbrust auf Zucchinigemüse", desc:"Saftiges Hähnchen mit in Öl geschwenkter Zucchini – einfach, schnell, sättigend.",
+    zutaten:[{name:"Hühnchenbrust",base:150,unit:"g",scale:true},{name:"Zucchini",unlimited:true},{name:"Olivenöl",base:20,unit:"ml"},{name:"Salz & Pfeffer",fix:"nach Geschmack"}],
+    schritte:["Hühnchenbrust in Olivenöl von beiden Seiten goldbraun braten, bis der Kern durch ist.","Zucchini in Streifen im Bratfett kurz mitschwenken.","Mit Salz und Pfeffer abschmecken und gemeinsam servieren."]},
+  abend:{title:"Zucchini-Hühnchen-Pfanne", desc:"Eine warme Resteverwertung: alles aus einer Pfanne, wenig Aufwand am Abend.",
+    zutaten:[{name:"Hühnchenbrust",base:130,unit:"g",scale:true},{name:"Zucchini",unlimited:true},{name:"Olivenöl",base:15,unit:"ml"}],
+    schritte:["Hühnchen in Würfel schneiden, in Olivenöl anbraten.","Zucchiniwürfel dazugeben und mitbraten, bis alles gar ist.","Warm servieren, nach Belieben nachwürzen."]},
+ },
+ 2:{
+  morgen:{title:"Gebackene Eier mit Avocado", desc:"Im Ofen gestockte Eier auf cremiger Avocado – ein ruhiger, sättigender Start.",
+    zutaten:[{name:"Eier",base:120,unit:"g",scale:true},{name:"Avocado",base:70,unit:"g"},{name:"Olivenöl",base:10,unit:"ml"}],
+    schritte:["Avocadohälfte in eine kleine Auflaufform legen, Ei hineinschlagen.","Bei 190°C ca. 12–15 Minuten backen, bis das Eiweiß fest ist.","Mit Olivenöl beträufeln und leicht salzen."]},
+  mittag:{title:"Avocado-Hühnchen-Salat", desc:"Cremige Avocado trifft zartes Hähnchen – ein klassischer, unkomplizierter Keto-Teller.",
+    zutaten:[{name:"Hühnchenbrust",base:150,unit:"g",scale:true},{name:"Avocado",base:70,unit:"g"},{name:"Olivenöl",base:15,unit:"ml"},{name:"Zucchini",unlimited:true}],
+    schritte:["Hühnchen braten oder vom Vortag verwenden, in Streifen schneiden.","Avocado würfeln, mit Olivenöl und Salz vermengen.","Mit gedünsteter Zucchini als Basis anrichten."]},
+  abend:{title:"Gefülltes Ei mit Avocadocreme", desc:"Ein leichtes Abendessen: halbierte Eier mit würziger Avocadofüllung.",
+    zutaten:[{name:"Eier",base:100,unit:"g",scale:true},{name:"Avocado",base:60,unit:"g"},{name:"Salz & Pfeffer",fix:"nach Geschmack"}],
+    schritte:["Eier hart kochen, halbieren, Eigelb herauslösen.","Eigelb mit Avocado zu einer Creme zerdrücken, würzen.","Creme zurück in die Eihälften füllen."]},
+ },
+ 3:{
+  morgen:{title:"Spinat-Omelett mit Butter", desc:"Ein herzhaftes Omelett, in guter Butter gebraten, mit Spinat als Sättigungsbeilage.",
+    zutaten:[{name:"Eier",base:120,unit:"g",scale:true},{name:"Butter",base:15,unit:"g"},{name:"Spinat",unlimited:true}],
+    schritte:["Spinat in etwas Butter kurz zusammenfallen lassen, beiseitestellen.","Eier verquirlen, in Butter als Omelett stocken lassen.","Spinat auf einer Hälfte verteilen, Omelett zusammenklappen."]},
+  mittag:{title:"Hühnchen-Spinat-Pfanne mit Butter", desc:"Zartes Hähnchen mit viel Spinat, verfeinert mit Butter.",
+    zutaten:[{name:"Hühnchenbrust",base:150,unit:"g",scale:true},{name:"Spinat",unlimited:true},{name:"Butter",base:15,unit:"g"}],
+    schritte:["Hühnchen in Streifen scharf in etwas Butter anbraten.","Spinat dazugeben, kurz zusammenfallen lassen.","Mit Salz und Pfeffer abschmecken."]},
+  abend:{title:"Spinat-Käse-Pfanne", desc:"Ein schnelles, cremiges Abendessen mit viel grünem Gemüse.",
+    zutaten:[{name:"Spinat",unlimited:true},{name:"Butter",base:15,unit:"g"},{name:"Eier",base:60,unit:"g",scale:true}],
+    schritte:["Spinat in Butter andünsten.","Verquirltes Ei darübergießen und stocken lassen.","Warm servieren."]},
+ },
+ 4:{
+  morgen:{title:"Lachs-Rührei", desc:"Cremiges Rührei mit Stücken von geräuchertem Lachs – proteinreich und schnell gemacht.",
+    zutaten:[{name:"Eier",base:100,unit:"g",scale:true},{name:"Lachs",base:60,unit:"g",scale:true},{name:"Butter",base:10,unit:"g"}],
+    schritte:["Eier in Butter langsam stocken lassen.","Lachsstücke kurz vor Ende unterheben, nur erwärmen.","Mit Pfeffer servieren."]},
+  mittag:{title:"Gebratener Lachs auf Brokkoli", desc:"Knusprig gebratener Lachs auf einem Bett aus Brokkoli – ein klassischer Keto-Teller.",
+    zutaten:[{name:"Lachs",base:150,unit:"g",scale:true},{name:"Brokkoli",unlimited:true},{name:"Olivenöl",base:15,unit:"ml"}],
+    schritte:["Brokkoliröschen in Salzwasser bissfest kochen oder dämpfen.","Lachs in Olivenöl auf der Hautseite knusprig braten.","Zusammen anrichten, mit Öl beträufeln."]},
+  abend:{title:"Brokkoli-Lachs-Auflauf", desc:"Ein wärmendes Ofengericht für einen ruhigen Abend.",
+    zutaten:[{name:"Lachs",base:120,unit:"g",scale:true},{name:"Brokkoli",unlimited:true},{name:"Butter",base:10,unit:"g"}],
+    schritte:["Brokkoli vorgaren, mit Lachsstücken in eine Auflaufform schichten.","Butterflöckchen darauf verteilen.","Bei 200°C ca. 15 Minuten überbacken."]},
+ },
+ 5:{
+  morgen:{title:"Blumenkohl-Hash mit Mandeln", desc:"Geriebener Blumenkohl kross gebraten, mit gehackten Mandeln bestreut.",
+    zutaten:[{name:"Eier",base:100,unit:"g",scale:true},{name:"Blumenkohl",unlimited:true},{name:"Mandeln",base:15,unit:"g"}],
+    schritte:["Blumenkohl fein reiben, in Öl kross anbraten.","Ein Ei darüberschlagen und stocken lassen.","Mit gehackten Mandeln bestreuen."]},
+  mittag:{title:"Blumenkohlreis mit Hühnchen und Mandeln", desc:"Der Keto-Klassiker: Blumenkohl statt Reis, dazu würziges Hähnchen.",
+    zutaten:[{name:"Hühnchenbrust",base:150,unit:"g",scale:true},{name:"Blumenkohl",unlimited:true},{name:"Mandeln",base:15,unit:"g"},{name:"Olivenöl",base:15,unit:"ml"}],
+    schritte:["Blumenkohl fein raspeln, in Öl 5 Minuten anbraten – fertig ist der „Reis“.","Hühnchen separat braten, in Stücke schneiden.","Alles vermengen, mit gehackten Mandeln bestreuen."]},
+  abend:{title:"Blumenkohlsuppe mit gerösteten Mandeln", desc:"Eine cremige, leichte Suppe für den Abend.",
+    zutaten:[{name:"Blumenkohl",unlimited:true},{name:"Butter",base:15,unit:"g"},{name:"Mandeln",base:10,unit:"g"}],
+    schritte:["Blumenkohl in Butter andünsten, mit etwas Wasser weich kochen.","Fein pürieren, bis die Suppe cremig ist.","Mit gerösteten Mandelsplittern bestreuen."]},
+ },
+ 6:{
+  morgen:{title:"Rührei mit Gurken-Sticks", desc:"Ein einfaches, erfrischendes Frühstück ohne viel Aufwand.",
+    zutaten:[{name:"Eier",base:120,unit:"g",scale:true},{name:"Butter",base:10,unit:"g"},{name:"Gurke",unlimited:true}],
+    schritte:["Eier in Butter langsam stocken lassen.","Gurke in Sticks schneiden.","Zusammen servieren."]},
+  mittag:{title:"Rinderhack-Pfanne mit Gurkensalat", desc:"Würziges Rinderhack mit einem frischen, kühlen Gurkensalat als Kontrast.",
+    zutaten:[{name:"Rindfleisch",base:150,unit:"g",scale:true},{name:"Gurke",unlimited:true},{name:"Olivenöl",base:15,unit:"ml"}],
+    schritte:["Rinderhack in Olivenöl krümelig anbraten, würzen.","Gurke in dünne Scheiben hobeln, mit etwas Öl und Salz marinieren.","Beides zusammen anrichten."]},
+  abend:{title:"Gefüllte Gurkenboote mit Rindfleisch", desc:"Ein leichtes, spielerisches Abendessen mit wenig Kohlenhydraten.",
+    zutaten:[{name:"Rindfleisch",base:120,unit:"g",scale:true},{name:"Gurke",unlimited:true},{name:"Butter",base:10,unit:"g"}],
+    schritte:["Gurke längs halbieren, Kerngehäuse aushöhlen.","Rindfleisch in Butter anbraten, würzen.","Fleisch in die Gurkenboote füllen."]},
+ },
+ 7:{
+  morgen:{title:"Käse-Omelett mit Paprika", desc:"Ein herzhaftes Omelett mit geschmolzenem Käse und süßer Paprika.",
+    zutaten:[{name:"Eier",base:120,unit:"g",scale:true},{name:"Cheddar-Käse",base:30,unit:"g",scale:true},{name:"Paprika",base:50,unit:"g"}],
+    schritte:["Paprika in feine Streifen schneiden, kurz andünsten.","Eier verquirlen, in die Pfanne geben, Paprika verteilen.","Käse darüberstreuen und bei geschlossenem Deckel schmelzen lassen."]},
+  mittag:{title:"Überbackene Paprika mit Käse", desc:"Im Ofen gegarte Paprikahälften mit einer knusprigen Käsehaube.",
+    zutaten:[{name:"Cheddar-Käse",base:60,unit:"g",scale:true},{name:"Paprika",base:150,unit:"g"},{name:"Olivenöl",base:10,unit:"ml"}],
+    schritte:["Paprika halbieren, entkernen, mit Öl beträufeln.","Bei 200°C ca. 15 Minuten vorgaren.","Mit Käse bestreuen und weitere 5–10 Minuten überbacken."]},
+  abend:{title:"Käse-Paprika-Snackteller", desc:"Ein unkompliziertes, kaltes Abendessen für einen entspannten Tagesausklang.",
+    zutaten:[{name:"Cheddar-Käse",base:50,unit:"g",scale:true},{name:"Paprika",base:80,unit:"g"}],
+    schritte:["Käse in Würfel schneiden.","Paprika in Streifen schneiden.","Zusammen anrichten."]},
+ },
+ 8:{
+  morgen:{title:"Kokosöl-Rührei mit Petersilie", desc:"Fluffiges Rührei in Kokosöl gebraten, mit frischer Petersilie bestreut.",
+    zutaten:[{name:"Eier",base:120,unit:"g",scale:true},{name:"Kokosöl",base:15,unit:"g"},{name:"Petersilie",unlimited:true}],
+    schritte:["Eier in Kokosöl bei milder Hitze langsam stocken lassen.","Fein gehackte Petersilie kurz vor Ende unterheben.","Sofort servieren."]},
+  mittag:{title:"Walnuss-Hühnchensalat mit Petersilie", desc:"Knackige Walnüsse und frische Petersilie machen aus Hähnchen ein kleines Festmahl.",
+    zutaten:[{name:"Hühnchenbrust",base:150,unit:"g",scale:true},{name:"Walnüsse",base:20,unit:"g"},{name:"Petersilie",unlimited:true},{name:"Olivenöl",base:15,unit:"ml"}],
+    schritte:["Hühnchen braten, auskühlen lassen, in Stücke zupfen.","Mit gehackten Walnüssen und reichlich Petersilie mischen.","Mit Olivenöl beträufeln, salzen."]},
+  abend:{title:"Kokos-Gemüsepfanne mit Petersilie", desc:"Ein leicht exotisches, warmes Abendessen.",
+    zutaten:[{name:"Kokosöl",base:15,unit:"g"},{name:"Zucchini",unlimited:true},{name:"Walnüsse",base:15,unit:"g"},{name:"Petersilie",unlimited:true}],
+    schritte:["Zucchini in Kokosöl anbraten.","Mit gehackten Walnüssen bestreuen.","Reichlich Petersilie darüber geben."]},
+ },
+ 9:{
+  morgen:{title:"Champignon-Rührei", desc:"Erdige Champignons mit cremigem Rührei – ein wärmender Start in den Tag.",
+    zutaten:[{name:"Eier",base:120,unit:"g",scale:true},{name:"Champignons",unlimited:true},{name:"Butter",base:10,unit:"g"}],
+    schritte:["Champignons in Scheiben in Butter goldbraun anbraten.","Verquirlte Eier dazugeben und stocken lassen.","Mit Pfeffer abschmecken."]},
+  mittag:{title:"Thunfisch-Champignon-Pfanne", desc:"Schnell gemacht, proteinreich und mit viel Volumen durch die Pilze.",
+    zutaten:[{name:"Thunfisch",base:150,unit:"g",scale:true},{name:"Champignons",unlimited:true},{name:"Olivenöl",base:15,unit:"ml"}],
+    schritte:["Champignons in Olivenöl anbraten, bis die Flüssigkeit verdampft ist.","Thunfisch (abgetropft) unterheben, kurz erwärmen.","Würzen und servieren."]},
+  abend:{title:"Gefüllte Champignons mit Thunfisch", desc:"Ein hübsches, kleines Abendgericht, das satt macht, ohne zu beschweren.",
+    zutaten:[{name:"Champignons",unlimited:true},{name:"Thunfisch",base:100,unit:"g",scale:true},{name:"Olivenöl",base:10,unit:"ml"}],
+    schritte:["Große Champignons putzen, Stiele entfernen und klein hacken.","Stiele mit Thunfisch vermengen, in die Köpfe füllen.","Im Ofen bei 200°C ca. 12 Minuten backen."]},
+ },
+ 10:{
+  morgen:{title:"Speck-Ei-Pfanne mit Meersalz", desc:"Ein deftiger Klassiker – knuspriger Speck und weiches Ei, bewusst gesalzen.",
+    zutaten:[{name:"Speck",base:40,unit:"g"},{name:"Eier",base:110,unit:"g",scale:true},{name:"Meersalz",unlimited:true}],
+    schritte:["Speck in der Pfanne knusprig auslassen.","Eier dazugeben und im Fett stocken lassen.","Leicht mit Meersalz nachwürzen."]},
+  mittag:{title:"Sahnige Pilzpfanne mit Speck", desc:"Cremig durch Sahne, herzhaft durch Speck – ein sättigendes Mittagessen.",
+    zutaten:[{name:"Speck",base:40,unit:"g"},{name:"Sahne",base:60,unit:"ml"},{name:"Champignons",unlimited:true}],
+    schritte:["Speck auslassen, Champignons darin anbraten.","Sahne angießen, kurz einkochen lassen.","Mit Meersalz und Pfeffer abschmecken."]},
+  abend:{title:"Leichte Sahnesuppe mit Meersalz", desc:"Eine kleine, wärmende Suppe für den Abend, bewusst elektrolytreich gewürzt.",
+    zutaten:[{name:"Sahne",base:50,unit:"ml"},{name:"Meersalz",unlimited:true},{name:"Butter",base:10,unit:"g"}],
+    schritte:["Butter schmelzen, mit etwas Wasser aufgießen.","Sahne einrühren, kurz köcheln lassen.","Mit Meersalz abschmecken."]},
+ },
+ 11:{
+  morgen:{title:"Salat-Rührei mit Macadamia", desc:"Ein leichtes Frühstück mit knackigen Macadamianüssen als Topping.",
+    zutaten:[{name:"Eier",base:110,unit:"g",scale:true},{name:"Salat",unlimited:true},{name:"Macadamianüsse",base:15,unit:"g"}],
+    schritte:["Eier stocken lassen.","Auf einem Bett aus grünem Salat anrichten.","Gehackte Macadamianüsse darüberstreuen."]},
+  mittag:{title:"Macadamia-Hühnchensalat", desc:"Ein knackiger, sättigender Salat mit buttrigen Macadamianüssen.",
+    zutaten:[{name:"Hühnchenbrust",base:150,unit:"g",scale:true},{name:"Salat",unlimited:true},{name:"Macadamianüsse",base:20,unit:"g"},{name:"Olivenöl",base:15,unit:"ml"}],
+    schritte:["Hühnchen braten, in Streifen schneiden.","Mit Salat und gehackten Macadamianüssen mischen.","Mit Olivenöl anmachen."]},
+  abend:{title:"Salatteller mit Macadamia-Öl-Dressing", desc:"Ein leichtes, kühles Abendessen, ideal nach einem aktiven Tag.",
+    zutaten:[{name:"Salat",unlimited:true},{name:"Macadamianüsse",base:15,unit:"g"},{name:"Olivenöl",base:15,unit:"ml"}],
+    schritte:["Salat waschen und in eine Schüssel geben.","Macadamianüsse grob hacken und darüberstreuen.","Mit Olivenöl beträufeln, salzen."]},
+ },
+ 12:{
+  morgen:{title:"Rosmarin-Rührei", desc:"Ein aromatisches Frühstück mit dem harzigen Duft von frischem Rosmarin.",
+    zutaten:[{name:"Eier",base:110,unit:"g",scale:true},{name:"Butter",base:10,unit:"g"},{name:"Rosmarin",unlimited:true}],
+    schritte:["Rosmarinnadeln fein hacken.","Eier in Butter mit dem Rosmarin stocken lassen.","Warm servieren."]},
+  mittag:{title:"Lammfleisch mit Oliven und Rosmarin", desc:"Ein mediterraner Teller: würziges Lamm, salzige Oliven, frischer Rosmarin.",
+    zutaten:[{name:"Lammfleisch",base:150,unit:"g",scale:true},{name:"Oliven",base:30,unit:"g"},{name:"Rosmarin",unlimited:true},{name:"Olivenöl",base:15,unit:"ml"}],
+    schritte:["Lammfleisch mit Rosmarin und Öl marinieren, kurz ziehen lassen.","In der Pfanne scharf anbraten.","Mit Oliven servieren."]},
+  abend:{title:"Oliven-Rosmarin-Pfanne", desc:"Ein leichtes, mediterran gewürztes Abendessen.",
+    zutaten:[{name:"Lammfleisch",base:100,unit:"g",scale:true},{name:"Oliven",base:20,unit:"g"},{name:"Rosmarin",unlimited:true}],
+    schritte:["Lammreste oder dünne Scheiben kurz anbraten.","Oliven und gehackten Rosmarin dazugeben.","Kurz durchschwenken und servieren."]},
+ },
+ 13:{
+  morgen:{title:"Sardinen auf Selleriestangen", desc:"Ein ungewöhnliches, aber sehr sättigendes Frühstück mit viel Omega-3.",
+    zutaten:[{name:"Sardinen",base:80,unit:"g",scale:true},{name:"Sellerie",unlimited:true},{name:"Olivenöl",base:10,unit:"ml"}],
+    schritte:["Sellerie in Stangen schneiden.","Sardinen (aus der Dose, abgetropft) darauf verteilen.","Mit Olivenöl beträufeln."]},
+  mittag:{title:"Sardinen-Sellerie-Salat", desc:"Frisch, knackig und proteinreich – ein leichtes, aber sättigendes Mittagessen.",
+    zutaten:[{name:"Sardinen",base:120,unit:"g",scale:true},{name:"Sellerie",unlimited:true},{name:"Olivenöl",base:15,unit:"ml"}],
+    schritte:["Sellerie in feine Scheiben schneiden.","Sardinen zerpflücken und untermengen.","Mit Öl, Salz und Pfeffer abschmecken."]},
+  abend:{title:"Selleriesuppe mit Sardinen", desc:"Eine warme, leichte Suppe zum Tagesausklang.",
+    zutaten:[{name:"Sellerie",unlimited:true},{name:"Sardinen",base:60,unit:"g",scale:true},{name:"Butter",base:10,unit:"g"}],
+    schritte:["Sellerie in Butter andünsten, mit Wasser aufgießen und weich köcheln.","Fein pürieren.","Sardinenstücke kurz vor dem Servieren einrühren."]},
+ },
+ 14:{
+  morgen:{title:"Zimtige Butter-Wärme", desc:"Eine wärmende, buttrige Zimt-Mischung als sanfter Start in den Tag.",
+    zutaten:[{name:"Butter",base:15,unit:"g"},{name:"Zimt",unlimited:true}],
+    schritte:["Butter in heißem Wasser oder Kaffee-Ersatz schmelzen.","Kräftig aufschäumen.","Mit einer Prise Zimt bestäuben und warm trinken."]},
+  mittag:{title:"Warmer Teller mit Himbeeren und Zimt", desc:"Ein bewusster, kleiner Genussmoment als Teil eines herzhaften Mittagessens.",
+    zutaten:[{name:"Himbeeren",base:30,unit:"g"},{name:"Zimt",unlimited:true},{name:"Sahne",base:20,unit:"ml"}],
+    schritte:["Sahne leicht anwärmen.","Himbeeren vorsichtig unterheben.","Mit Zimt bestäuben und als kleine Nachspeise genießen."]},
+  abend:{title:"Ein Stück dunkle Schokolade zum Tagesausklang", desc:"Bewusster Genuss statt Verzicht: ein kleines Stück, langsam geschmolzen auf der Zunge.",
+    zutaten:[{name:"Dunkle Schokolade (85%)",base:15,unit:"g"},{name:"Zimt",unlimited:true}],
+    schritte:["Ein bis zwei kleine Stücke Schokolade abbrechen.","Mit einer Prise Zimt bestreuen.","Langsam und bewusst genießen, nicht nebenbei."]},
+ },
+ 15:{
+  morgen:{title:"Magerquark mit Leinsamen und Pfeffer", desc:"Herzhafter Quark mit nussigem Leinsamen-Crunch.",
+    zutaten:[{name:"Magerquark",base:150,unit:"g",scale:true},{name:"Leinsamen",base:15,unit:"g"},{name:"Pfeffer",unlimited:true}],
+    schritte:["Magerquark glattrühren, salzen.","Leinsamen unterheben oder darüberstreuen.","Frisch gepfeffert servieren."]},
+  mittag:{title:"Hühnchen mit Leinsamen-Kruste", desc:"Eine knusprige Kruste aus Leinsamen macht aus Hähnchen etwas Besonderes.",
+    zutaten:[{name:"Hühnchenbrust",base:150,unit:"g",scale:true},{name:"Leinsamen",base:20,unit:"g"},{name:"Olivenöl",base:15,unit:"ml"}],
+    schritte:["Hühnchenbrust in Öl wenden, dann in Leinsamen wälzen.","In der Pfanne oder im Ofen goldbraun garen.","Mit Pfeffer würzen."]},
+  abend:{title:"Quark-Leinsamen-Bowl", desc:"Ein leichtes, sättigendes Abendessen mit viel Ballaststoffen.",
+    zutaten:[{name:"Magerquark",base:120,unit:"g",scale:true},{name:"Leinsamen",base:10,unit:"g"},{name:"Pfeffer",unlimited:true}],
+    schritte:["Quark in eine Schale geben.","Leinsamen darüberstreuen.","Mit Salz und Pfeffer abschmecken."]},
+ },
+ 16:{
+  morgen:{title:"Griechischer Joghurt mit Sesam", desc:"Cremiger Joghurt mit geröstetem Sesam für den nussigen Crunch.",
+    zutaten:[{name:"Griechischer Joghurt",base:180,unit:"g",scale:true},{name:"Sesam",base:10,unit:"g"}],
+    schritte:["Sesam in einer trockenen Pfanne kurz anrösten.","Über den Joghurt streuen.","Sofort servieren, solange der Sesam knuspert."]},
+  mittag:{title:"Ingwer-Hühnchen-Pfanne mit Sesam", desc:"Asiatisch inspiriert: scharfer Ingwer, nussiger Sesam, zartes Hähnchen.",
+    zutaten:[{name:"Hühnchenbrust",base:150,unit:"g",scale:true},{name:"Ingwer",unlimited:true},{name:"Sesam",base:10,unit:"g"},{name:"Olivenöl",base:15,unit:"ml"}],
+    schritte:["Ingwer fein reiben, Hühnchen darin kurz marinieren.","In Öl scharf anbraten.","Mit geröstetem Sesam bestreuen."]},
+  abend:{title:"Joghurt-Ingwer-Dip mit Gurke", desc:"Ein leichter, würziger Abschluss des Tages.",
+    zutaten:[{name:"Griechischer Joghurt",base:100,unit:"g",scale:true},{name:"Ingwer",unlimited:true},{name:"Sesam",base:5,unit:"g"},{name:"Gurke",unlimited:true}],
+    schritte:["Joghurt mit fein geriebenem Ingwer verrühren.","Mit Sesam bestreuen.","Zu Gurkensticks als Dip servieren."]},
+ },
+ 17:{
+  morgen:{title:"Radieschen-Rührei mit Parmesan", desc:"Ein pfeffrig-frisches Frühstück mit einer Prise geriebenem Hartkäse.",
+    zutaten:[{name:"Eier",base:110,unit:"g",scale:true},{name:"Radieschen",unlimited:true},{name:"Parmesan",base:15,unit:"g",scale:true}],
+    schritte:["Eier stocken lassen.","Fein geriebenen Parmesan unterheben.","Mit rohen Radieschenscheiben servieren."]},
+  mittag:{title:"Parmesan-Hühnchen mit Radieschensalat", desc:"Knusprig überbackenes Hähnchen, dazu ein frischer, knackiger Salat.",
+    zutaten:[{name:"Hühnchenbrust",base:150,unit:"g",scale:true},{name:"Parmesan",base:30,unit:"g",scale:true},{name:"Radieschen",unlimited:true},{name:"Olivenöl",base:15,unit:"ml"}],
+    schritte:["Hühnchen anbraten, mit Parmesan bestreuen und kurz überbacken.","Radieschen in dünne Scheiben hobeln.","Mit Olivenöl anmachen und dazu servieren."]},
+  abend:{title:"Radieschen-Parmesan-Teller", desc:"Ein einfacher, kalter Abendteller ohne viel Aufwand.",
+    zutaten:[{name:"Radieschen",unlimited:true},{name:"Parmesan",base:25,unit:"g",scale:true},{name:"Olivenöl",base:10,unit:"ml"}],
+    schritte:["Radieschen waschen und halbieren.","Parmesan in Spänen darüberhobeln.","Mit Olivenöl beträufeln."]},
+ },
+ 18:{
+  morgen:{title:"Tofu-Rührei mit Pak Choi", desc:"Eine pflanzliche Variante des klassischen Rühreis, mit knackigem Pak Choi.",
+    zutaten:[{name:"Tofu",base:130,unit:"g",scale:true},{name:"Pak Choi",unlimited:true},{name:"Olivenöl",base:15,unit:"ml"}],
+    schritte:["Tofu zerbröseln, in Öl kross anbraten.","Pak Choi in Streifen dazugeben, kurz mitdünsten.","Würzen und servieren."]},
+  mittag:{title:"Gebratener Tofu auf Pak Choi mit Brühe", desc:"Ein wärmendes, asiatisch angehauchtes Mittagessen mit klarer Brühe.",
+    zutaten:[{name:"Tofu",base:150,unit:"g",scale:true},{name:"Pak Choi",unlimited:true},{name:"Gemüsebrühe",base:200,unit:"ml"}],
+    schritte:["Tofu in Würfel schneiden, in Öl knusprig braten.","Pak Choi kurz in der heißen Brühe garziehen lassen.","Tofu dazugeben und servieren."]},
+  abend:{title:"Klare Brühe mit Pak Choi und Tofu", desc:"Eine leichte, elektrolytreiche Suppe für einen ruhigen Abend.",
+    zutaten:[{name:"Gemüsebrühe",base:300,unit:"ml"},{name:"Pak Choi",unlimited:true},{name:"Tofu",base:80,unit:"g",scale:true}],
+    schritte:["Brühe erhitzen.","Pak Choi und Tofuwürfel darin einige Minuten ziehen lassen.","Heiß servieren."]},
+ },
+ 19:{
+  morgen:{title:"Skyr mit Chiasamen", desc:"Proteinreich und cremig – die Chiasamen quellen leicht auf und geben Biss.",
+    zutaten:[{name:"Skyr",base:180,unit:"g",scale:true},{name:"Chiasamen",base:10,unit:"g"}],
+    schritte:["Chiasamen in den Skyr einrühren.","Kurz (5–10 Minuten) quellen lassen.","Direkt genießen."]},
+  mittag:{title:"Skyr-Dressing zu gebratenem Gemüse", desc:"Ein ungewöhnliches, aber stimmiges Dressing für einen herzhaften Gemüseteller.",
+    zutaten:[{name:"Skyr",base:100,unit:"g",scale:true},{name:"Chiasamen",base:5,unit:"g"},{name:"Olivenöl",base:10,unit:"ml"}],
+    schritte:["Skyr mit Öl glattrühren, salzen.","Über gebratenes Gemüse (z.B. Brokkoli oder Zucchini) geben.","Mit Chiasamen bestreuen."]},
+  abend:{title:"Chia-Skyr-Pudding", desc:"Ein leichter, puddingartiger Abschluss des Tages ganz ohne Zucker.",
+    zutaten:[{name:"Skyr",base:150,unit:"g",scale:true},{name:"Chiasamen",base:15,unit:"g"}],
+    schritte:["Skyr und Chiasamen gut verrühren.","Mindestens 20 Minuten (besser über Nacht) quellen lassen.","Kalt servieren."]},
+ },
+ 20:{
+  morgen:{title:"Mandelmehl-Pfannkuchen mit Leinöl", desc:"Kohlenhydratarme Pfannkuchen, verfeinert mit hochwertigem Leinöl.",
+    zutaten:[{name:"Mandelmehl",base:40,unit:"g"},{name:"Eier",base:100,unit:"g",scale:true},{name:"Leinöl",base:10,unit:"ml"}],
+    schritte:["Mandelmehl und Eier zu einem glatten Teig verrühren.","Kleine Pfannkuchen in einer Pfanne von beiden Seiten backen.","Mit Leinöl beträufelt servieren."]},
+  mittag:{title:"Hühnchen im Mandelmantel", desc:"Eine knusprige, kohlenhydratarme Panade aus Mandelmehl.",
+    zutaten:[{name:"Hühnchenbrust",base:150,unit:"g",scale:true},{name:"Mandelmehl",base:30,unit:"g"},{name:"Eier",base:40,unit:"g",scale:true}],
+    schritte:["Hühnchen in Ei wenden, dann in Mandelmehl panieren.","In der Pfanne goldbraun braten.","Mit grünem Blattgemüse servieren."]},
+  abend:{title:"Salat mit Leinöl-Dressing und Mandeln", desc:"Ein leichtes Abendessen mit gesundem Pflanzenfett und knackigen Mandeln.",
+    zutaten:[{name:"Salat",unlimited:true},{name:"Leinöl",base:10,unit:"ml"},{name:"Mandeln",base:15,unit:"g"}],
+    schritte:["Grünes Blattgemüse als Basis anrichten.","Mit Leinöl beträufeln.","Mit gehackten Mandeln bestreuen."]},
+ },
+ 21:{
+  morgen:{title:"Skyr mit wilden Heidelbeeren", desc:"Ein festlicher Frühstücksabschluss der Reise – zuckerarme wilde Beeren statt Kulturware.",
+    zutaten:[{name:"Skyr",base:180,unit:"g",scale:true},{name:"Wilde Heidelbeeren",base:40,unit:"g"},{name:"Kürbiskerne",base:10,unit:"g"}],
+    schritte:["Skyr in eine Schale geben.","Wilde Heidelbeeren vorsichtig darüber verteilen.","Mit Kürbiskernen bestreuen."]},
+  mittag:{title:"Festlicher Salat mit Kürbiskernen und Heidelbeeren", desc:"Ein bunter Abschlussteller, der die gesamte Reise auf einem Teller zusammenfasst.",
+    zutaten:[{name:"Hühnchenbrust",base:150,unit:"g",scale:true},{name:"Salat",unlimited:true},{name:"Kürbiskerne",base:15,unit:"g"},{name:"Wilde Heidelbeeren",base:25,unit:"g"},{name:"Olivenöl",base:15,unit:"ml"}],
+    schritte:["Hühnchen braten, in Streifen schneiden.","Auf Salat anrichten, mit Kürbiskernen und Heidelbeeren toppen.","Mit Olivenöl beträufeln."]},
+  abend:{title:"Abschlussteller: Wilde Heidelbeeren mit Skyr und Kürbiskernen", desc:"Ein kleines, bewusstes Dessert zum Abschluss von 21 Tagen Lernreise.",
+    zutaten:[{name:"Skyr",base:120,unit:"g",scale:true},{name:"Wilde Heidelbeeren",base:30,unit:"g"},{name:"Kürbiskerne",base:10,unit:"g"}],
+    schritte:["Skyr in eine Schale füllen.","Heidelbeeren und Kürbiskerne darüber verteilen.","In Ruhe genießen – du hast die Reise geschafft."]},
+ },
+};
+
+const AKTIVITAET = {
+  wenig:{label:"Wenig bewegt", protPerKg:1.2, tdeeFactor:1.2},
+  mittel:{label:"Mittel bewegt", protPerKg:1.6, tdeeFactor:1.375},
+  viel:{label:"Viel bewegt", protPerKg:2.0, tdeeFactor:1.55},
+};
+const WOHLBEFINDEN = {
+  schlecht:{label:"Schlecht", emoji:"😞", score:1},
+  neutral:{label:"Neutral", emoji:"😐", score:2},
+  gut:{label:"Gut", emoji:"😊", score:3},
+};
+
+const K = {
+  name:"ketoreise_name", age:"ketoreise_alter", height:"ketoreise_groesse", weight:"ketoreise_gewicht",
+  start:"ketoreise_start", revealed:"ketoreise_revealed", checkin:"ketoreise_checkin", wblog:"ketoreise_wb_log",
+};
+const MS_PRO_TAG = 24 * 60 * 60 * 1000;
+const REF_PROTEIN = 112;
+
+/* ============ HILFSFUNKTIONEN ============ */
+function getState(){
+  const name = localStorage.getItem(K.name);
+  const age = parseFloat(localStorage.getItem(K.age));
+  const height = parseFloat(localStorage.getItem(K.height));
+  const weight = parseFloat(localStorage.getItem(K.weight));
+  const start = localStorage.getItem(K.start);
+  if(!name || !start || !weight || !age || !height) return null;
+  return { name, age, height, weight, start: parseInt(start, 10) };
+}
+
+function todayStr(){
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+}
+
+function getCheckin(){
+  try{
+    const raw = localStorage.getItem(K.checkin);
+    if(!raw) return {activity:null, wellbeing:null};
+    const parsed = JSON.parse(raw);
+    if(parsed.date !== todayStr()) return {activity:null, wellbeing:null};
+    return {activity: parsed.activity || null, wellbeing: parsed.wellbeing || null};
+  }catch(e){ return {activity:null, wellbeing:null}; }
+}
+
+function setCheckin(partial){
+  const current = getCheckin();
+  const merged = {date: todayStr(), activity: current.activity, wellbeing: current.wellbeing, ...partial};
+  localStorage.setItem(K.checkin, JSON.stringify(merged));
+  if(merged.wellbeing){
+    logWellbeing(merged.date, merged.wellbeing);
+  }
+}
+
+function logWellbeing(date, level){
+  let log = [];
+  try{ log = JSON.parse(localStorage.getItem(K.wblog)) || []; }catch(e){ log = []; }
+  const idx = log.findIndex(e => e.date === date);
+  if(idx >= 0) log[idx].level = level;
+  else log.push({date, level});
+  localStorage.setItem(K.wblog, JSON.stringify(log));
+}
+
+function getWellbeingLog(){
+  try{ return JSON.parse(localStorage.getItem(K.wblog)) || []; }catch(e){ return []; }
+}
+
+function getRevealed(){
+  try{ const raw = localStorage.getItem(K.revealed); return raw ? JSON.parse(raw) : []; }catch(e){ return []; }
+}
+function revealItem(id){
+  const revealed = getRevealed();
+  if(!revealed.includes(id)){ revealed.push(id); localStorage.setItem(K.revealed, JSON.stringify(revealed)); }
+}
+
+function currentDay(start){
+  const elapsed = Date.now() - start;
+  const day = Math.floor(elapsed / MS_PRO_TAG) + 1;
+  return Math.min(Math.max(day, 1), TAGE.length);
+}
+function msBisNaechstemTag(start, day){
+  if(day >= TAGE.length) return 0;
+  const naechsterStart = start + day * MS_PRO_TAG;
+  return Math.max(naechsterStart - Date.now(), 0);
+}
+function formatDauer(ms){
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+function alleItemsBisTag(day){
+  let items = [];
+  for(let i=0; i<day; i++) items = items.concat(TAGE[i].items);
+  return items;
+}
+function isDebugMode(){
+  try{ return new URLSearchParams(window.location.search).get("debug") === "1"; }catch(e){ return false; }
+}
+
+function computeTargets(age, height, weight, level){
+  const a = AKTIVITAET[level] || AKTIVITAET.mittel;
+  const bmr = 10*weight + 6.25*height - 5*age - 78; // unisex-Näherung (Mittel aus Mifflin-St Jeor m/w)
+  const kcal = Math.round(Math.max(bmr, 800) * a.tdeeFactor);
+  const protein = Math.round(weight * a.protPerKg);
+  const carbs = 25;
+  const fettFull = Math.max(Math.round((kcal - protein*4 - carbs*4) / 9), 0);
+  const fettMin = Math.max(Math.round(fettFull * 0.5), 0);
+  return {protein, kcal, carbs, fettMin, fettMax: fettFull};
+}
+
+function scaleAmount(base, factor){
+  const val = base * factor;
+  return Math.max(Math.round(val/5)*5, 5);
+}
+function escapeHtml(str){
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+/* ============ RENDER ============ */
+const app = document.getElementById("app");
+let intervalHandle = null;
+let onboardStep = 1;
+let onboardTemp = {name:"", age:"", height:"", weight:""};
+let expandedDays = null;
+let checkinEditMode = false;
+
+function render(){
+  const state = getState();
+  if(!state){ renderOnboarding(); } else { renderDashboard(state); }
+}
+
+/* ---------- Onboarding (3 Seiten) ---------- */
+function renderOnboarding(){
+  if(intervalHandle) clearInterval(intervalHandle);
+  if(onboardStep === 1) renderOnboardStep1();
+  else if(onboardStep === 2) renderOnboardStep2();
+  else renderOnboardStep3();
+}
+
+function wizardDots(step){
+  let html = '<div class="wizard-dots">';
+  for(let i=1;i<=3;i++) html += `<div class="wdot ${i===step?'active':''}"></div>`;
+  return html + '</div>';
+}
+
+function renderOnboardStep1(){
+  app.innerHTML = `
+    <div class="onboard">
+      <div class="onboard-card glass">
+        ${wizardDots(1)}
+        <div class="logo-badge">${logoSvg(78)}</div>
+        <h1>Die Keto-Lernreise</h1>
+        <p class="lead">21 Tage, um Lebensmittel neu kennenzulernen – Schritt für Schritt, ein bisschen mehr jeden Tag.</p>
+        <button class="btn-primary" id="toStep2" style="width:100%;">Los geht's</button>
+      </div>
+    </div>
+  `;
+  document.getElementById("toStep2").addEventListener("click", () => { onboardStep = 2; renderOnboarding(); });
+}
+
+function renderOnboardStep2(){
+  app.innerHTML = `
+    <div class="onboard">
+      <div class="onboard-card glass">
+        ${wizardDots(2)}
+        <div class="logo-badge">${logoSvg(48)}</div>
+        <h2>Ein paar Angaben zu dir</h2>
+        <p class="lead">Damit wir Protein- und Kalorienbedarf realistisch berechnen können.</p>
+        <form id="step2Form">
+          <div class="field">
+            <div class="field-label">Name</div>
+            <input type="text" id="fName" placeholder="Dein Name" maxlength="30" autocomplete="off" value="${escapeHtml(onboardTemp.name)}"/>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <div class="field-label">Alter (Jahre)</div>
+              <input type="number" id="fAge" placeholder="z.B. 34" min="10" max="100" value="${onboardTemp.age}"/>
+            </div>
+            <div class="field">
+              <div class="field-label">Größe (cm)</div>
+              <input type="number" id="fHeight" placeholder="z.B. 175" min="100" max="230" value="${onboardTemp.height}"/>
+            </div>
+          </div>
+          <div class="field">
+            <div class="field-label">Gewicht (kg)</div>
+            <input type="number" id="fWeight" placeholder="z.B. 78" min="30" max="250" step="0.1" value="${onboardTemp.weight}"/>
+          </div>
+          <div class="wizard-actions">
+            <button type="button" class="btn-secondary" id="toStep1">Zurück</button>
+            <button type="submit" class="btn-primary" id="toStep3" disabled>Weiter</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+  const fName = document.getElementById("fName");
+  const fAge = document.getElementById("fAge");
+  const fHeight = document.getElementById("fHeight");
+  const fWeight = document.getElementById("fWeight");
+  const btn = document.getElementById("toStep3");
+  function checkValid(){
+    btn.disabled = !(fName.value.trim().length>0 && parseFloat(fAge.value)>0 && parseFloat(fHeight.value)>0 && parseFloat(fWeight.value)>0);
+  }
+  [fName,fAge,fHeight,fWeight].forEach(el => el.addEventListener("input", checkValid));
+  checkValid();
+  document.getElementById("toStep1").addEventListener("click", () => {
+    onboardTemp = {name:fName.value, age:fAge.value, height:fHeight.value, weight:fWeight.value};
+    onboardStep = 1; renderOnboarding();
+  });
+  document.getElementById("step2Form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    onboardTemp = {name:fName.value.trim(), age:fAge.value, height:fHeight.value, weight:fWeight.value};
+    onboardStep = 3; renderOnboarding();
+  });
+}
+
+function renderOnboardStep3(){
+  app.innerHTML = `
+    <div class="onboard">
+      <div class="onboard-card glass">
+        ${wizardDots(3)}
+        <div class="logo-badge">${logoSvg(48)}</div>
+        <h2>Kurz erklärt</h2>
+        <div class="mini-cards">
+          <div class="mini-card"><div class="mc-icon">🥑</div><div class="mc-text">Du startest schlank: nur 3 Lebensmittel am ersten Tag.</div></div>
+          <div class="mini-card"><div class="mc-icon">⏱️</div><div class="mc-text">Alle 24h schaltet sich Neues frei – aktiv antippen zum Entdecken.</div></div>
+          <div class="mini-card"><div class="mc-icon">🍽️</div><div class="mc-text">Täglich 3 Rezepte, passend zu deinem Bedarf berechnet.</div></div>
+          <div class="mini-card"><div class="mc-icon">💬</div><div class="mc-text">Kurzer Check-in täglich: Bewegung &amp; Wohlbefinden.</div></div>
+        </div>
+        <div class="wizard-actions">
+          <button type="button" class="btn-secondary" id="toStep2b">Zurück</button>
+          <button type="button" class="btn-primary" id="finishOnboard">Reise beginnen</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById("toStep2b").addEventListener("click", () => { onboardStep = 2; renderOnboarding(); });
+  document.getElementById("finishOnboard").addEventListener("click", () => {
+    try{
+      localStorage.setItem(K.name, onboardTemp.name);
+      localStorage.setItem(K.age, String(parseFloat(onboardTemp.age)));
+      localStorage.setItem(K.height, String(parseFloat(onboardTemp.height)));
+      localStorage.setItem(K.weight, String(parseFloat(onboardTemp.weight)));
+      localStorage.setItem(K.start, String(Date.now()));
+    }catch(err){
+      alert("Speichern nicht möglich. Öffne diese Datei direkt im Browser (nicht in einer eingebetteten Vorschau).");
+      return;
+    }
+    onboardStep = 1;
+    render();
+  });
+}
+
+/* ---------- Dashboard ---------- */
+function renderDashboard(state){
+  const day = currentDay(state.start);
+  const fertig = day >= TAGE.length && msBisNaechstemTag(state.start, day) === 0;
+  const items = alleItemsBisTag(day);
+  const revealed = getRevealed();
+  const checkin = getCheckin();
+
+  if(expandedDays === null) expandedDays = new Set([day]);
+
+  const ringGrad = `conic-gradient(var(--accent) ${(day/TAGE.length)*360}deg, rgba(150,140,170,0.2) 0deg)`;
+
+  let dotsHtml = "";
+  TAGE.forEach((t, idx) => {
+    const dayNum = idx + 1;
+    let cls = "dot";
+    if(dayNum <= day) cls += ` filled-${t.items[0].ampel}`;
+    if(dayNum === day) cls += " today";
+    dotsHtml += `<div class="${cls}" title="Tag ${dayNum}"></div>`;
+  });
+
+  let countdownHtml = fertig
+    ? `<div class="countdown done">Alle 21 Tage abgeschlossen ✓</div>`
+    : `<div class="countdown" id="countdownEl">Nächstes Lebensmittel in ${formatDauer(msBisNaechstemTag(state.start, day))}</div>`;
+
+  let completeHtml = "";
+  if(fertig){
+    const log = getWellbeingLog();
+    let wbHtml = "";
+    if(log.length > 0){
+      const counts = {schlecht:0, neutral:0, gut:0};
+      log.forEach(e => { if(counts[e.level] !== undefined) counts[e.level]++; });
+      const half = Math.max(Math.floor(log.length/2), 1);
+      const firstAvg = log.slice(0, half).reduce((s,e)=>s+(WOHLBEFINDEN[e.level]?.score||2),0) / half;
+      const lastAvg = log.slice(-half).reduce((s,e)=>s+(WOHLBEFINDEN[e.level]?.score||2),0) / half;
+      let trend;
+      if(lastAvg - firstAvg > 0.3) trend = "Dein Wohlbefinden hat sich im Verlauf der Reise spürbar verbessert. 🌱";
+      else if(firstAvg - lastAvg > 0.3) trend = "Dein Wohlbefinden war zuletzt niedriger als am Anfang – achte in den nächsten Tagen gut auf dich.";
+      else trend = "Dein Wohlbefinden ist über die Reise recht stabil geblieben.";
+      wbHtml = `
+        <div class="wellbeing-summary">
+          <h4>Dein Wohlbefinden im Verlauf</h4>
+          <div class="wb-counts">
+            <div><span class="wb-num">😊 ${counts.gut}</span>Gut</div>
+            <div><span class="wb-num">😐 ${counts.neutral}</span>Neutral</div>
+            <div><span class="wb-num">😞 ${counts.schlecht}</span>Schlecht</div>
+          </div>
+          <div class="wb-trend">${trend}</div>
+        </div>
+      `;
+    }
+    completeHtml = `
+      <div class="complete-card glass">
+        <h2>Geschafft, ${escapeHtml(state.name)}.</h2>
+        <p>Du kennst jetzt ${items.length} Lebensmittel, ihre Makronährstoffe und ihre Ampelfarbe. Nimm dieses Gespür mit in deinen Alltag: viel Grün, wenig Gelb, ganz bewusst Rot.</p>
+        ${wbHtml}
+      </div>
+    `;
+  }
+
+  // Tages-Check (Bewegung + Wohlbefinden) oder Tagesbedarf
+  const complete = checkin.activity && checkin.wellbeing;
+  let checkHtml = "";
+  if(!complete || checkinEditMode){
+    checkHtml = `
+      <div class="check-card glass">
+        <h3>Dein Tages-Check</h3>
+        <div class="check-row">
+          <div class="row-label">Wie viel hast du dich heute bewegt?</div>
+          <div class="choice-row" id="activityChoices">
+            <button class="choice-btn ${checkin.activity==='wenig'?'active':''}" data-level="wenig">Wenig</button>
+            <button class="choice-btn ${checkin.activity==='mittel'?'active':''}" data-level="mittel">Mittel</button>
+            <button class="choice-btn ${checkin.activity==='viel'?'active':''}" data-level="viel">Viel</button>
+          </div>
+        </div>
+        <div class="check-row">
+          <div class="row-label">Wie fühlst du dich heute?</div>
+          <div class="choice-row" id="wellbeingChoices">
+            <button class="choice-btn ${checkin.wellbeing==='schlecht'?'active':''}" data-level="schlecht">😞 Schlecht</button>
+            <button class="choice-btn ${checkin.wellbeing==='neutral'?'active':''}" data-level="neutral">😐 Neutral</button>
+            <button class="choice-btn ${checkin.wellbeing==='gut'?'active':''}" data-level="gut">😊 Gut</button>
+          </div>
+        </div>
+      </div>
+    `;
+  } else {
+    const t = computeTargets(state.age, state.height, state.weight, checkin.activity);
+    checkHtml = `
+      <div class="needs-card glass">
+        <h3>Deine grobe Tagesempfehlung</h3>
+        <div class="needs-sub">${AKTIVITAET[checkin.activity].label} · ${WOHLBEFINDEN[checkin.wellbeing].emoji} ${WOHLBEFINDEN[checkin.wellbeing].label}</div>
+        <div class="needs-grid">
+          <div class="need-stat"><div class="val">${t.protein} g</div><div class="lbl">Protein</div></div>
+          <div class="need-stat"><div class="val">${t.fettMin}–${t.fettMax} g</div><div class="lbl">Fett, Spielraum</div></div>
+          <div class="need-stat"><div class="val">${t.carbs} g</div><div class="lbl">Kohlenhydrate</div></div>
+          <div class="need-stat"><div class="val">${t.kcal}</div><div class="lbl">kcal, ca.</div></div>
+        </div>
+        <div class="fat-tip">💡 Fett ist deine Stellschraube: Iss davon nur so viel, wie du zum Sattwerden brauchst – den Rest holt sich dein Körper aus eigenen Reserven. Genau das ist beim Abnehmen erwünscht.</div>
+        <div class="needs-note">Grobe Richtwerte, keine medizinische Beratung. Sättigungsbeilagen (z.B. Zucchini, Salat, Gurke, Pak Choi) darfst du zusätzlich unbegrenzt essen.</div>
+        <button class="edit-link" id="editCheckin">Angaben für heute ändern</button>
+      </div>
+    `;
+  }
+
+  let cardsHtml = "";
+  for(let d = day; d >= 1; d--){
+    const tagObj = TAGE[d-1];
+    const isExpanded = expandedDays.has(d);
+    cardsHtml += `<div class="day-block">`;
+    cardsHtml += `
+      <div class="day-header" data-day="${d}">
+        <div class="day-header-left">
+          <span class="day-chevron">${isExpanded ? '▾' : '▸'}</span>
+          <span class="day-title">Tag ${d}</span>
+          ${d===day && !fertig ? '<span class="today-pill">Heute</span>' : ''}
+        </div>
+        <span class="recipe-link" data-recipeday="${d}">🍽 Rezepte</span>
+      </div>
+    `;
+    if(isExpanded){
+      cardsHtml += `<div class="day-tip">${escapeHtml(tagObj.tipp)}</div>`;
+      cardsHtml += `<div class="food-grid">`;
+      tagObj.items.forEach(item => {
+        const isRevealed = revealed.includes(item.id);
+        if(isRevealed){
+          const isNeu = d === day && !fertig;
+          cardsHtml += `
+            <div class="food-card ${item.ampel}" data-id="${item.id}">
+              <div class="fname"><span class="femoji">${item.emoji}</span>${item.name}${isNeu ? '<span class="new-badge">NEU</span>' : ''}</div>
+              <div class="fmeta">${item.kcal} kcal · ${item.kh} g KH /100g</div>
+              <div class="ftag">${item.ampel === "gruen" ? "Grün" : item.ampel === "gelb" ? "Gelb" : "Rot"}</div>
+              ${item.unlimited ? '<span class="funlim">∞ unbegrenzt</span>' : ""}
+            </div>
+          `;
+        } else {
+          cardsHtml += `
+            <div class="food-card locked ${item.ampel}" data-id="${item.id}" data-locked="1">
+              <div class="locked-inner">
+                <div class="fname"><span class="femoji">${item.emoji}</span>${item.name}</div>
+                <div class="fmeta">${item.kcal} kcal · ${item.kh} g KH /100g</div>
+              </div>
+              <div class="unlock-overlay">
+                <div class="unlock-icon">✨</div>
+                <div class="unlock-text">Neu freigeschaltet</div>
+                <div class="unlock-sub">Tippen zum Entdecken</div>
+              </div>
+            </div>
+          `;
+        }
+      });
+      cardsHtml += `</div>`;
+    }
+    cardsHtml += `</div>`;
+  }
+
+  let lockedNote = "";
+  if(!fertig){
+    const naechsteAnzahl = TAGE[day].items.length;
+    lockedNote = `<div class="locked-note glass">Morgen kommen ${naechsteAnzahl} weitere Lebensmittel dazu. Kaffee und Wasser sind schon jetzt und immer uneingeschränkt erlaubt.</div>`;
+  }
+
+  app.innerHTML = `
+    <header class="top">
+      <div class="top-left">
+        <div class="logo-mini">${logoSvg(34)}</div>
+        <div class="hello">Hallo <b>${escapeHtml(state.name)}</b></div>
+      </div>
+      <button class="reset-link" id="resetBtn">Reise zurücksetzen</button>
+    </header>
+
+    <div class="ring-card glass">
+      <div class="ring" style="background:${ringGrad}">
+        <div class="hole">
+          <div class="daynum">${Math.min(day, TAGE.length)}</div>
+          <div class="dayof">von ${TAGE.length}</div>
+        </div>
+      </div>
+      <div class="ring-info">
+        <h2>${fertig ? "Reise abgeschlossen" : `Tag ${day} von ${TAGE.length}`}</h2>
+        ${countdownHtml}
+        <div class="progress-dots">${dotsHtml}</div>
+      </div>
+    </div>
+
+    ${checkHtml}
+
+    <div class="legend-strip">
+      <span><i class="lg"></i>Grün: uneingeschränkt</span>
+      <span><i class="lgb"></i>Gelb: in Maßen</span>
+      <span><i class="lr"></i>Rot: nur wenig</span>
+    </div>
+
+    ${completeHtml}
+    ${lockedNote}
+    ${cardsHtml}
+
+    <div class="env-note">
+      Fortschritt wird lokal in deinem Browser gespeichert. Öffne die Datei direkt im Browser-Tab, damit der Speicher zuverlässig funktioniert.
+    </div>
+
+    ${isDebugMode() && !fertig ? `
+      <div class="debug-panel">
+        <span>Test-Modus (?debug=1)</span>
+        <button id="debugSkipBtn">+24h vorspulen</button>
+      </div>
+    ` : ""}
+  `;
+
+  document.querySelectorAll(".food-card").forEach(card => {
+    card.addEventListener("click", () => {
+      const item = items.find(i => i.id === card.dataset.id);
+      if(!item) return;
+      if(card.dataset.locked === "1") revealItem(item.id);
+      openFoodModal(item);
+      render();
+    });
+  });
+
+  document.querySelectorAll(".recipe-link").forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openRecipeModal(parseInt(link.dataset.recipeday, 10), state);
+    });
+  });
+
+  document.querySelectorAll(".day-header").forEach(header => {
+    header.addEventListener("click", () => {
+      const d = parseInt(header.dataset.day, 10);
+      if(expandedDays.has(d)) expandedDays.delete(d); else expandedDays.add(d);
+      render();
+    });
+  });
+
+  const activityChoices = document.getElementById("activityChoices");
+  if(activityChoices){
+    activityChoices.querySelectorAll(".choice-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        setCheckin({activity: btn.dataset.level});
+        checkinEditMode = false;
+        render();
+      });
+    });
+  }
+  const wellbeingChoices = document.getElementById("wellbeingChoices");
+  if(wellbeingChoices){
+    wellbeingChoices.querySelectorAll(".choice-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        setCheckin({wellbeing: btn.dataset.level});
+        checkinEditMode = false;
+        render();
+      });
+    });
+  }
+  const editBtn = document.getElementById("editCheckin");
+  if(editBtn){
+    editBtn.addEventListener("click", () => { checkinEditMode = true; render(); });
+  }
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    if(confirm("Deine gesamte Lernreise wird gelöscht und du beginnst wieder bei Tag 1. Fortfahren?")){
+      Object.values(K).forEach(k => localStorage.removeItem(k));
+      expandedDays = null;
+      checkinEditMode = false;
+      render();
+    }
+  });
+
+  const debugBtn = document.getElementById("debugSkipBtn");
+  if(debugBtn){
+    debugBtn.addEventListener("click", () => {
+      localStorage.setItem(K.start, String(state.start - MS_PRO_TAG));
+      render();
+    });
+  }
+
+  if(intervalHandle) clearInterval(intervalHandle);
+  if(!fertig){
+    intervalHandle = setInterval(() => {
+      const newDay = currentDay(state.start);
+      if(newDay !== day){ render(); return; }
+      const el = document.getElementById("countdownEl");
+      if(el) el.textContent = `Nächstes Lebensmittel in ${formatDauer(msBisNaechstemTag(state.start, newDay))}`;
+    }, 1000);
+  }
+}
+
+function openFoodModal(item){
+  const overlay = document.getElementById("overlay");
+  const modal = document.getElementById("modalBody");
+  modal.className = `modal ${item.ampel}`;
+  modal.innerHTML = `
+    <div class="modal-head">
+      <div class="femoji">${item.emoji}</div>
+      <h3>${item.name}</h3>
+    </div>
+    <div class="tag-line">${AMPEL_LABEL[item.ampel]}${item.unlimited ? " · Sättigungsbeilage, unbegrenzt" : ""}</div>
+    <p class="desc">${item.desc}</p>
+    <table class="macro">
+      <tr><td>Kalorien</td><td>${item.kcal} kcal</td></tr>
+      <tr><td>Fett</td><td>${item.fett} g</td></tr>
+      <tr><td>Protein</td><td>${item.protein} g</td></tr>
+      <tr><td>Kohlenhydrate</td><td>${item.kh} g</td></tr>
+    </table>
+    <div class="macro-note">Werte pro 100 g, gerundet. Kategorie: ${item.kategorie}.</div>
+    <button class="close-btn" id="closeModal">Schließen</button>
+  `;
+  overlay.classList.remove("hidden");
+  document.getElementById("closeModal").addEventListener("click", closeModal);
+  overlay.addEventListener("click", (e) => { if(e.target === overlay) closeModal(); });
+}
+
+function openRecipeModal(day, state){
+  const overlay = document.getElementById("overlay");
+  const modal = document.getElementById("modalBody");
+  const checkin = getCheckin();
+  const activity = checkin.activity || "mittel";
+  const targets = computeTargets(state.age, state.height, state.weight, activity);
+  const factor = Math.min(Math.max(targets.protein / REF_PROTEIN, 0.5), 2.2);
+  const rez = REZEPTE[day];
+
+  function renderZutat(z){
+    if(z.unlimited) return `<li><span class="zname">${z.name}</span><span class="zamt">nach Belieben</span></li>`;
+    if(z.fix) return `<li><span class="zname">${z.name}</span><span class="zamt">${z.fix}</span></li>`;
+    const amt = z.scale ? scaleAmount(z.base, factor) : z.base;
+    return `<li><span class="zname">${z.name}</span><span class="zamt">${amt} ${z.unit}</span></li>`;
+  }
+  function renderRezept(meal, label){
+    const r = rez[meal];
+    return `
+      <div class="recipe-block">
+        <div class="rmeal">${label}</div>
+        <h4>${r.title}</h4>
+        <div class="rdesc">${r.desc}</div>
+        <ul class="zutaten">${r.zutaten.map(renderZutat).join("")}</ul>
+        <ol class="schritte">${r.schritte.map(s=>`<li>${s}</li>`).join("")}</ol>
+      </div>
+    `;
+  }
+
+  modal.className = "modal";
+  modal.innerHTML = `
+    <div class="modal-head">
+      <div class="femoji">🍽</div>
+      <h3>Rezepte für Tag ${day}</h3>
+    </div>
+    <div class="recipe-intro">Mengen grob angepasst an ${targets.protein}g Protein/Tag (${AKTIVITAET[activity].label.toLowerCase()}). Sättigungsbeilagen dürfen zusätzlich unbegrenzt dazu gegessen werden.</div>
+    ${renderRezept("morgen","Morgens")}
+    ${renderRezept("mittag","Mittags")}
+    ${renderRezept("abend","Abends")}
+    <button class="close-btn" id="closeModal">Schließen</button>
+  `;
+  overlay.classList.remove("hidden");
+  document.getElementById("closeModal").addEventListener("click", closeModal);
+  overlay.addEventListener("click", (e) => { if(e.target === overlay) closeModal(); });
+}
+
+function closeModal(){ document.getElementById("overlay").classList.add("hidden"); }
+
+render();
+</script>
+</body>
+</html>
