@@ -299,21 +299,20 @@
     border:1px solid var(--glass-border);
     border-left:3px solid var(--gruen);
     border-radius:14px;
-    padding:12px 15px;
+    padding:18px 16px;
     cursor:pointer;
     transition:transform 0.12s;
     display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
+    flex-direction:column;
+    gap:8px;
   }
   .food-card:hover{transform:translateY(-2px);}
   .food-card.gelb{border-left-color:var(--gelb);}
   .food-card.rot{border-left-color:var(--rot);}
-  .food-card .fname{font-size:0.98rem; font-weight:600; display:flex; align-items:center; gap:7px; flex-shrink:0;}
-  .food-card .femoji{font-size:1.15rem;}
-  .food-card .fmeta{font-size:0.82rem; color:var(--ink-faint); text-align:right;}
-  .food-card .fright{display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0;}
+  .food-card .fname{font-size:1.05rem; font-weight:600; display:flex; align-items:center; gap:9px;}
+  .food-card .femoji{font-size:1.5rem;}
+  .food-card .fmeta{font-size:0.82rem; color:var(--ink-faint);}
+  .food-card .fright{display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
   .food-card .ftag{display:inline-block; font-size:0.76rem; letter-spacing:0.4px; text-transform:uppercase; color:var(--gruen);}
   .food-card.gelb .ftag{color:var(--gelb);}
   .food-card.rot .ftag{color:var(--rot);}
@@ -327,7 +326,7 @@
   @media (prefers-reduced-motion: reduce){
     .food-card.locked{animation:none;}
   }
-  .food-card.locked .locked-inner{filter:blur(7px); opacity:0.6; user-select:none; display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%;}
+  .food-card.locked .locked-inner{filter:blur(7px); opacity:0.6; user-select:none; display:flex; flex-direction:column; gap:8px; width:100%;}
   .food-card.locked .unlock-overlay{
     position:absolute; inset:0; display:flex; flex-direction:row; align-items:center; justify-content:center;
     gap:8px; background:rgba(255,255,255,0.4); text-align:center; padding:8px;
